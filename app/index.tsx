@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import BrowseCarsScreen from "./screens/cars/BrowseCarsScreen";
 import CarDetailScreen from "./screens/cars/CarDetailScreen";
 import CompareScreen from "./screens/cars/CompareScreen";
+import TradeInEstimationScreen from "./screens/cars/TradeInEstimationScreen";
 // import ProfileScreen from "./screens/profile/ProfileScreen";
 import WishlistScreen from "./screens/profile/WishlistScreen";
 import { store } from "./store/store";
@@ -22,6 +23,7 @@ type RootStackParamList = {
   BrowseCars: undefined;
   CarDetails: { car: any };
   Compare: undefined;
+  TradeInEstimation: undefined;
 };
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
@@ -33,6 +35,7 @@ function CarStack() {
       <Stack.Screen name="BrowseCars" component={BrowseCarsScreen} options={{ title: "Browse Cars" }} />
       <Stack.Screen name="CarDetails" component={CarDetailScreen} options={{ title: "Car Details" }} />
       <Stack.Screen name="Compare" component={CompareScreen} options={{ title: "Compare Cars" }} />
+      <Stack.Screen name="TradeInEstimation" component={TradeInEstimationScreen} options={{ title: "Trade-In Estimation" }} />
     </Stack.Navigator>
   );
 }
