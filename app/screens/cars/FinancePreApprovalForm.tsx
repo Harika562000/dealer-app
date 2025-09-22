@@ -32,7 +32,6 @@ export default function FinancePreApprovalForm() {
       Alert.alert('Validation Error', 'Please fill all fields.');
       return false;
     }
-    // Add more validations (email format, phone format) as needed
     return true;
   };
 
@@ -42,10 +41,8 @@ export default function FinancePreApprovalForm() {
     setIsSubmitting(true);
 
     try {
-      // Simulate API call delay
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      // Here, you would send formData to your backend API for processing
 
       Alert.alert('Success', 'Your pre-approval request has been submitted!');
       setFormData({
