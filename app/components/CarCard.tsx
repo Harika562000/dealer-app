@@ -13,6 +13,10 @@ interface Car {
   fuel: string;
   mileage: string;
   image: string;
+  transmission?: string;
+  category?: string;
+  seating?: number;
+  features?: string[];
 }
 
 interface CarCardProps {
@@ -36,8 +40,19 @@ export default function CarCard({ car, onPress }: CarCardProps) {
       <Image source={{ uri: car.image }} style={styles.image} />
       <View style={styles.info}>
         <Text style={styles.title}>{car.make} {car.model}</Text>
-        <Text style={styles.details}>Year: {car.year} | {car.fuel}</Text>
-        <Text style={styles.price}>₹{car.price.toLocaleString()}</Text>
+        <Text style={styles.details}>Year: {car.year} | {car.fuel} | {car.mileage}</Text>
+        {car.category && <Text style={styles.category}>{car.category}</Text>}
+        {car.transmission && <Text style={styles.transmission}>{car.transmission} | {car.seating || 5} Seater</Text>}
+        <Text style={styles.price}>₹{car.price.toLocaleString('en-IN')}</Text>
+        
+        {/* Features */}
+        {car.features && car.features.length > 0 && (
+          <View style={styles.featuresContainer}>
+            <Text style={styles.featuresText}>
+              {car.features.slice(0, 2).join(' • ')}
+            </Text>
+          </View>
+        )}
         
         {/* Notification Action Buttons */}
         <View style={styles.notificationActions}>
@@ -68,7 +83,11 @@ const styles = StyleSheet.create({
   info: { padding: 10 },
   title: { fontSize: 16, fontWeight: "bold" },
   details: { fontSize: 14, color: "#555" },
-  price: { fontSize: 15, color: "green", marginTop: 5 },
+  category: { fontSize: 12, color: "#007bff", fontWeight: "500", marginTop: 2 },
+  transmission: { fontSize: 12, color: "#6c757d", marginTop: 2 },
+  price: { fontSize: 15, color: "green", marginTop: 5, fontWeight: "600" },
+  featuresContainer: { marginTop: 5 },
+  featuresText: { fontSize: 11, color: "#6c757d", fontStyle: "italic" },
   notificationActions: {
     flexDirection: "row",
     justifyContent: "space-between",

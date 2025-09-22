@@ -12,13 +12,14 @@ import TradeInEstimationScreen from "./screens/cars/TradeInEstimationScreen";
 // import ProfileScreen from "./screens/profile/ProfileScreen";
 import NotificationsScreen from "./screens/profile/NotificationsScreen";
 import WishlistScreen from "./screens/profile/WishlistScreen";
+import RecommendationsScreen from "./screens/recommendations/RecommendationsScreen";
 import { store } from "./store/store";
 
 type RootTabParamList = {
   Cars: undefined;
+  Recommendations: undefined;
   Wishlist: undefined;
   Notifications: undefined;
-  TestDrive: undefined;
   Profile: undefined;
 };
 
@@ -43,6 +44,10 @@ function CarStack() {
   );
 }
 
+function RecommendationsWrapper({ navigation }: any) {
+  return <RecommendationsScreen navigation={navigation} />;
+}
+
 function WishlistWrapper({ navigation, route }: any) {
   return <WishlistScreen navigation={navigation} route={route} />;
 }
@@ -63,18 +68,18 @@ export default function App() {
             
             let iconName: keyof typeof Ionicons.glyphMap = "car";
             if (route.name === "Cars") iconName = "car-sport";
+            else if (route.name === "Recommendations") iconName = "star";
             else if (route.name === "Wishlist") iconName = "heart";
-            else if (route.name === "TestDrive") iconName = "calendar";
             else if (route.name === "Profile") iconName = "person";
             return <Ionicons name={iconName} size={size} color={color} />;
           },
         })}
       >
         <Tab.Screen name="Cars" component={CarStack} options={{ headerShown: false }} />
+        <Tab.Screen name="Recommendations" component={RecommendationsWrapper} />
         <Tab.Screen name="Wishlist" component={WishlistWrapper} />
         <Tab.Screen name="Notifications" component={NotificationsWrapper} />
-        {/* <Tab.Screen name="TestDrive" component={TestDriveScreen} />
-        <Tab.Screen name="Profile" component={ProfileScreen} /> */}
+        {/* <Tab.Screen name="Profile" component={ProfileScreen} /> */}
       </Tab.Navigator>
     </Provider>
   );
