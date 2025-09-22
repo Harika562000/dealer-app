@@ -13,6 +13,8 @@ import TradeInEstimationScreen from "./screens/cars/TradeInEstimationScreen";
 import NotificationsScreen from "./screens/profile/NotificationsScreen";
 import WishlistScreen from "./screens/profile/WishlistScreen";
 import { store } from "./store/store";
+import EmiCalculator from "./screens/cars/EmiCalculator";
+import FinancePreApprovalForm from "./screens/cars/FinancePreApprovalForm";
 
 type RootTabParamList = {
   Cars: undefined;
@@ -27,6 +29,8 @@ type RootStackParamList = {
   CarDetails: { car: any };
   Compare: undefined;
   TradeInEstimation: undefined;
+  EmiCalculator: undefined;
+  FinancePreApprovalForm: undefined;
 };
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
@@ -39,6 +43,8 @@ function CarStack() {
       <Stack.Screen name="CarDetails" component={CarDetailScreen} options={{ title: "Car Details" }} />
       <Stack.Screen name="Compare" component={CompareScreen} options={{ title: "Compare Cars" }} />
       <Stack.Screen name="TradeInEstimation" component={TradeInEstimationScreen} options={{ title: "Trade-In Estimation" }} />
+      <Stack.Screen name="EmiCalculator" component={EmiCalculator} options={{ title: "EMI Calculator" }} />
+      <Stack.Screen name="FinancePreApprovalForm" component={FinancePreApprovalForm} options={{ title: "Finance Pre-Approval" }} />
     </Stack.Navigator>
   );
 }

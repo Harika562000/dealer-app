@@ -2,7 +2,10 @@ import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useDispatch } from "react-redux";
-import { triggerNewArrivalNotification, triggerPriceDropNotification } from "../utils/notificationHelpers";
+import {
+  triggerNewArrivalNotification,
+  triggerPriceDropNotification,
+} from "../utils/notificationHelpers";
 
 interface Car {
   id: string;
@@ -10,9 +13,14 @@ interface Car {
   model: string;
   year: number;
   price: number;
+  originalPrice?: number;
   fuel: string;
   mileage: string;
   image: string;
+  seasonalOffer?: boolean;
+  dealerPromotion?: boolean;
+  isHotDeal?: boolean;
+  isNewArrival?: boolean;
 }
 
 interface CarCardProps {
@@ -31,26 +39,72 @@ export default function CarCard({ car, onPress }: CarCardProps) {
     triggerNewArrivalNotification(dispatch, car);
   };
 
+  const discountPercent =
+    car.originalPrice && car.originalPrice > car.price
+      ? Math.round(((car.originalPrice - car.price) / car.originalPrice) * 100)
+      : 0;
+
   return (
     <TouchableOpacity style={styles.card} onPress={onPress}>
-      <Image source={{ uri: car.image }} style={styles.image} />
+      <View>
+        <Image source={{ uri: car.image }} style={styles.image} />
+        {discountPercent > 0 && (
+          <View style={styles.discountBadge}>
+            <Text style={styles.discountText}>{discountPercent}% OFF</Text>
+          </View>
+        )}
+        {car.isHotDeal && (
+          <View style={styles.hotDealBadge}>
+            <Text style={styles.badgeText}>Hot Deal</Text>
+          </View>
+        )}
+        {car.isNewArrival && (
+          <View style={styles.newBadge}>
+            <Text style={styles.badgeText}>New Arrival</Text>
+          </View>
+        )}
+      </View>
+
       <View style={styles.info}>
-        <Text style={styles.title}>{car.make} {car.model}</Text>
-        <Text style={styles.details}>Year: {car.year} | {car.fuel}</Text>
-        <Text style={styles.price}>₹{car.price.toLocaleString()}</Text>
-        
-        {/* Notification Action Buttons */}
+        <Text style={styles.title}>
+          {car.make} {car.model}
+        </Text>
+        <Text style={styles.details}>
+          Year: {car.year} | {car.fuel} | {car.mileage}
+        </Text>
+
+        {/* Prices */}
+        <View style={styles.priceContainer}>
+          {discountPercent > 0 && (
+            <Text style={styles.originalPrice}>
+              ₹{car.originalPrice?.toLocaleString()}
+            </Text>
+          )}
+          <Text style={styles.price}>₹{car.price.toLocaleString()}</Text>
+        </View>
+
+        {/* Promo tags */}
+        <View style={styles.promoTags}>
+          {car.seasonalOffer && (
+            <Text style={styles.promoTag}>Seasonal Offer</Text>
+          )}
+          {car.dealerPromotion && (
+            <Text style={styles.promoTag}>Dealer Promo</Text>
+          )}
+        </View>
+
+        {/* Notification buttons */}
         <View style={styles.notificationActions}>
-          <TouchableOpacity 
-            style={styles.notificationButton} 
+          <TouchableOpacity
+            style={styles.notificationButton}
             onPress={handlePriceDropAlert}
           >
             <Ionicons name="trending-down" size={16} color="#e74c3c" />
             <Text style={styles.notificationButtonText}>Price Alert</Text>
           </TouchableOpacity>
-          
-          <TouchableOpacity 
-            style={styles.notificationButton} 
+
+          <TouchableOpacity
+            style={styles.notificationButton}
             onPress={handleNewArrivalAlert}
           >
             <Ionicons name="car" size={16} color="#27ae60" />
@@ -63,12 +117,58 @@ export default function CarCard({ car, onPress }: CarCardProps) {
 }
 
 const styles = StyleSheet.create({
-  card: { margin: 10, borderRadius: 10, backgroundColor: "#fff", elevation: 3, display: "flex" },
-  image: { width: "100%", height: 180, borderTopLeftRadius: 10, borderTopRightRadius: 10 },
-  info: { padding: 10 },
-  title: { fontSize: 16, fontWeight: "bold" },
-  details: { fontSize: 14, color: "#555" },
-  price: { fontSize: 15, color: "green", marginTop: 5 },
+  card: {
+    margin: 10,
+    borderRadius: 10,
+    backgroundColor: "#fff",
+    elevation: 3,
+    overflow: "hidden",
+  },
+  image: {
+    width: "100%",
+    height: 180,
+  },
+  info: {
+    padding: 10,
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  details: {
+    fontSize: 14,
+    color: "#555",
+    marginVertical: 4,
+  },
+  priceContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    marginVertical: 6,
+  },
+  price: {
+    fontSize: 16,
+    color: "green",
+    fontWeight: "bold",
+  },
+  originalPrice: {
+    fontSize: 14,
+    color: "#888",
+    textDecorationLine: "line-through",
+  },
+  promoTags: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 6,
+  },
+  promoTag: {
+    backgroundColor: "#f1f3f5",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+    fontSize: 12,
+    color: "#343a40",
+  },
   notificationActions: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -91,5 +191,42 @@ const styles = StyleSheet.create({
     color: "#495057",
     marginLeft: 4,
     fontWeight: "500",
+  },
+  discountBadge: {
+    position: "absolute",
+    top: 10,
+    right: 10,
+    backgroundColor: "#d63031",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 4,
+  },
+  discountText: {
+    color: "#fff",
+    fontSize: 12,
+    fontWeight: "bold",
+  },
+  hotDealBadge: {
+    position: "absolute",
+    top: 10,
+    left: 10,
+    backgroundColor: "#e74c3c",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 4,
+  },
+  newBadge: {
+    position: "absolute",
+    top: 40,
+    left: 10,
+    backgroundColor: "#3498db",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 4,
+  },
+  badgeText: {
+    color: "#fff",
+    fontSize: 12,
+    fontWeight: "bold",
   },
 });

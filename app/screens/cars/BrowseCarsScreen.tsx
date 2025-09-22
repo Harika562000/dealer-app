@@ -10,6 +10,8 @@ type RootStackParamList = {
   CarDetails: { car: any };
   Compare: undefined;
   TradeInEstimation: undefined;
+  EmiCalculator: undefined;
+  FinancePreApprovalForm: undefined;
 };
 
 type BrowseCarsScreenProps = NativeStackScreenProps<RootStackParamList, "BrowseCars">;
@@ -24,6 +26,14 @@ export default function BrowseCarsScreen({ navigation }: BrowseCarsScreenProps) 
       >
         <Ionicons name="calculator-outline" size={20} color="white" />
         <Text style={styles.tradeInButtonText}>Get Trade-In Value</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.tradeInButton}
+        onPress={() => navigation.navigate("EmiCalculator")}
+      >
+        <Ionicons name="calculator-outline" size={20} color="white" />
+        <Text style={styles.tradeInButtonText}>Calculate EMI</Text>
       </TouchableOpacity>
 
       <FlatList
