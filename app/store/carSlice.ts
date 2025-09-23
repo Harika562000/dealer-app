@@ -9,6 +9,10 @@ interface Car {
   fuel: string;
   mileage: string;
   image: string;
+  transmission?: string;
+  category?: string;
+  seating?: number;
+  features?: string[];
 }
 
 interface CarState {
