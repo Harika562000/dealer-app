@@ -9,6 +9,7 @@ type RootStackParamList = {
   BrowseCars: undefined;
   CarDetails: { car: any };
   Compare: undefined;
+  FinancePreApprovalForm: undefined;
   TestDrive: { car: any };
 };
 
@@ -71,6 +72,7 @@ export default function CarDetailScreen({ route, navigation }: CarDetailScreenPr
       <Button title="Add to Wishlist" onPress={handleAddToWishlist} />
       <Button title="Add to Compare" onPress={() => dispatch(addToCompare(car))} />
       <Button title="Book Test Drive" onPress={() => navigation.navigate("TestDrive", { car })} />
+      <Button title="Finance Pre-Approval" onPress={() => navigation.navigate("FinancePreApprovalForm")} />
     </View>
   );
 }
