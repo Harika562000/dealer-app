@@ -1,5 +1,5 @@
 import { CarView, SearchQuery, UserPreferences, WishlistAction } from "../store/userBehaviorSlice";
-import { cars } from "./dummyApi";
+import { cars } from "./dummyCars";
 
 // Simple car interface matching our data structure
 interface Car {
