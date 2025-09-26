@@ -6,9 +6,14 @@ interface Car {
   model: string;
   year: number;
   price: number;
+  originalPrice?: number;
   fuel: string;
   mileage: string;
   image: string;
+  seasonalOffer?: boolean;
+  dealerPromotion?: boolean;
+  isHotDeal?: boolean;
+  isNewArrival?: boolean;
   transmission?: string;
   category?: string;
   seating?: number;

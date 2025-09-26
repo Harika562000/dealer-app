@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
-import { Button, FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import CarCard from "../../components/CarCard";
 import { removeFromWishlist } from "../../store/carSlice";
@@ -35,7 +35,10 @@ export default function WishlistScreen({ navigation }: WishlistScreenProps) {
             car={item}
             onPress={() => navigation.navigate("CarDetails", { car: item })}
           />
-          <Button title="Remove" onPress={() => dispatch(removeFromWishlist(item.id))} />
+          {/* <Button title="Remove" onPress={() => dispatch(removeFromWishlist(item.id))} /> */}
+          <TouchableOpacity style={styles.removeButton} onPress={() => dispatch(removeFromWishlist(item.id))}>
+            <Text style={styles.removeButtonText}>Remove</Text>
+          </TouchableOpacity>
         </View>
       )}
     />
@@ -43,5 +46,13 @@ export default function WishlistScreen({ navigation }: WishlistScreenProps) {
 }
 
 const styles = StyleSheet.create({
-  container: { width: 200, flex: 1, justifyContent: "center", alignItems: "center" },
+  container: { flex: 1, justifyContent: "center", alignItems: "center" },
+  removeButton: {
+    marginTop: 10,
+    backgroundColor: "#e74c3c",
+    paddingVertical: 10,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  removeButtonText: { color: "#fff", fontWeight: "bold" },
 });

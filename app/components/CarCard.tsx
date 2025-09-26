@@ -144,13 +144,6 @@ const styles = StyleSheet.create({
     elevation: 3,
     overflow: "hidden",
   },
-  image: {
-    width: "100%",
-    height: 180,
-  },
-  info: {
-    padding: 10,
-  },
   title: {
     fontSize: 16,
     fontWeight: "bold",
@@ -165,11 +158,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 8,
     marginVertical: 6,
-  },
-  price: {
-    fontSize: 16,
-    color: "green",
-    fontWeight: "bold",
   },
   originalPrice: {
     fontSize: 14,
@@ -189,14 +177,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#343a40",
   },
-  card: { margin: 10, borderRadius: 10, backgroundColor: "#fff", elevation: 3, display: "flex" },
   image: { width: "100%", height: 180, borderTopLeftRadius: 10, borderTopRightRadius: 10 },
   info: { padding: 10 },
-  title: { fontSize: 16, fontWeight: "bold" },
-  details: { fontSize: 14, color: "#555" },
   category: { fontSize: 12, color: "#007bff", fontWeight: "500", marginTop: 2 },
   transmission: { fontSize: 12, color: "#6c757d", marginTop: 2 },
-  price: { fontSize: 15, color: "green", marginTop: 5, fontWeight: "600" },
+  price: { fontSize: 15, color: "green", marginTop: 5, fontWeight: "bold" },
   featuresContainer: { marginTop: 5 },
   featuresText: { fontSize: 11, color: "#6c757d", fontStyle: "italic" },
   notificationActions: {
