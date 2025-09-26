@@ -96,7 +96,7 @@ export default function RecommendationCard({
       {/* Header with category and confidence */}
       <View style={styles.header}>
         <View style={styles.categoryBadge}>
-          <Ionicons name={getCategoryIcon(category)} size={14} color="#3498db" />
+          <Ionicons name={getCategoryIcon(category)} size={14} color="#171C8F" />
           <Text style={styles.categoryText}>
             {category.replace('_', ' ').toUpperCase()}
           </Text>
@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
   },
   categoryText: {
     fontSize: 10,
-    color: '#3498db',
+    color: '#171C8F',
     fontWeight: '600',
     marginLeft: 4,
   },

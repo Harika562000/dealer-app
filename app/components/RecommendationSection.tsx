@@ -71,12 +71,12 @@ export default function RecommendationSection({
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={styles.titleContainer}>
-            <Ionicons name={getCategoryIcon(category)} size={20} color="#3498db" />
+            <Ionicons name={getCategoryIcon(category)} size={20} color="#171C8F" />
             <Text style={styles.title}>{title}</Text>
           </View>
         </View>
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#3498db" />
+          <ActivityIndicator size="large" color="#171C8F" />
           <Text style={styles.loadingText}>Loading recommendations...</Text>
         </View>
       </View>
@@ -88,7 +88,7 @@ export default function RecommendationSection({
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={styles.titleContainer}>
-            <Ionicons name={getCategoryIcon(category)} size={20} color="#3498db" />
+            <Ionicons name={getCategoryIcon(category)} size={20} color="#171C8F" />
             <Text style={styles.title}>{title}</Text>
           </View>
         </View>
@@ -121,7 +121,7 @@ export default function RecommendationSection({
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={styles.titleContainer}>
-            <Ionicons name={getCategoryIcon(category)} size={20} color="#3498db" />
+            <Ionicons name={getCategoryIcon(category)} size={20} color="#171C8F" />
             <Text style={styles.title}>{title}</Text>
             <View style={styles.countBadge}>
               <Text style={styles.countText}>{recommendations.length}</Text>
@@ -130,7 +130,7 @@ export default function RecommendationSection({
           {showViewAll && recommendations.length > maxItems && (
             <TouchableOpacity style={styles.viewAllButton} onPress={onViewAll}>
               <Text style={styles.viewAllText}>View All</Text>
-              <Ionicons name="chevron-forward" size={16} color="#3498db" />
+              <Ionicons name="chevron-forward" size={16} color="#171C8F" />
             </TouchableOpacity>
           )}
         </View>
@@ -151,13 +151,13 @@ export default function RecommendationSection({
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={styles.titleContainer}>
-            <Ionicons name={getCategoryIcon(category)} size={20} color="#3498db" />
+            <Ionicons name={getCategoryIcon(category)} size={20} color="#171C8F" />
             <Text style={styles.title}>{title}</Text>
           </View>
           {showViewAll && recommendations.length > maxItems && (
             <TouchableOpacity style={styles.viewAllButton} onPress={onViewAll}>
               <Text style={styles.viewAllText}>View All</Text>
-              <Ionicons name="chevron-forward" size={16} color="#3498db" />
+              <Ionicons name="chevron-forward" size={16} color="#171C8F" />
             </TouchableOpacity>
           )}
         </View>
@@ -178,7 +178,7 @@ export default function RecommendationSection({
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.titleContainer}>
-          <Ionicons name={getCategoryIcon(category)} size={20} color="#3498db" />
+          <Ionicons name={getCategoryIcon(category)} size={20} color="#171C8F" />
           <Text style={styles.title}>{title}</Text>
           <View style={styles.countBadge}>
             <Text style={styles.countText}>{recommendations.length}</Text>
@@ -187,7 +187,7 @@ export default function RecommendationSection({
         {showViewAll && recommendations.length > maxItems && (
           <TouchableOpacity style={styles.viewAllButton} onPress={onViewAll}>
             <Text style={styles.viewAllText}>View All</Text>
-            <Ionicons name="chevron-forward" size={16} color="#3498db" />
+            <Ionicons name="chevron-forward" size={16} color="#171C8F" />
           </TouchableOpacity>
         )}
       </View>
@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   countBadge: {
-    backgroundColor: '#3498db',
+    backgroundColor: '#171C8F',
     borderRadius: 10,
     paddingHorizontal: 6,
     paddingVertical: 2,
@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   viewAllText: {
-    color: '#3498db',
+    color: '#171C8F',
     fontSize: 14,
     fontWeight: '600',
     marginRight: 4,

@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#3498db',
+    backgroundColor: '#171C8F',
     margin: 15,
     marginTop: 5,
     padding: 15,

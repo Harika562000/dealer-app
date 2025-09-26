@@ -195,7 +195,7 @@ const DefaultErrorFallback: React.FC<ErrorFallbackProps> = ({
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.secondaryButton} onPress={handleSendReport}>
-            <Ionicons name="paper-plane-outline" size={20} color="#3498db" />
+            <Ionicons name="paper-plane-outline" size={20} color="#171C8F" />
             <Text style={styles.secondaryButtonText}>Send Report</Text>
           </TouchableOpacity>
         </View>
@@ -333,7 +333,7 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   primaryButton: {
-    backgroundColor: '#3498db',
+    backgroundColor: '#171C8F',
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 20,
@@ -348,7 +348,7 @@ const styles = StyleSheet.create({
   },
   secondaryButton: {
     borderWidth: 1,
-    borderColor: '#3498db',
+    borderColor: '#171C8F',
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 20,
@@ -357,7 +357,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   secondaryButtonText: {
-    color: '#3498db',
+    color: '#171C8F',
     fontSize: 16,
     fontWeight: '600',
   },
@@ -374,7 +374,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   retryButton: {
-    backgroundColor: '#3498db',
+    backgroundColor: '#171C8F',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 4,
