@@ -10,18 +10,19 @@ import CarDetailScreen from "./screens/cars/CarDetailScreen";
 import CompareScreen from "./screens/cars/CompareScreen";
 import TradeInEstimationScreen from "./screens/cars/TradeInEstimationScreen";
 // import ProfileScreen from "./screens/profile/ProfileScreen";
+import EmiCalculator from "./screens/cars/EmiCalculator";
+import FinancePreApprovalForm from "./screens/cars/FinancePreApprovalForm";
 import NotificationsScreen from "./screens/profile/NotificationsScreen";
 import WishlistScreen from "./screens/profile/WishlistScreen";
 import RecommendationsScreen from "./screens/recommendations/RecommendationsScreen";
 import { store } from "./store/store";
-import EmiCalculator from "./screens/cars/EmiCalculator";
-import FinancePreApprovalForm from "./screens/cars/FinancePreApprovalForm";
 
 type RootTabParamList = {
   Cars: undefined;
   Recommendations: undefined;
   Wishlist: undefined;
   Notifications: undefined;
+  Compare: undefined;
   Profile: undefined;
 };
 
@@ -40,12 +41,31 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function CarStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="BrowseCars" component={BrowseCarsScreen} options={{ title: "Browse Cars" }} />
-      <Stack.Screen name="CarDetails" component={CarDetailScreen} options={{ title: "Car Details" }} />
-      <Stack.Screen name="Compare" component={CompareScreen} options={{ title: "Compare Cars" }} />
-      <Stack.Screen name="TradeInEstimation" component={TradeInEstimationScreen} options={{ title: "Trade-In Estimation" }} />
-      <Stack.Screen name="EmiCalculator" component={EmiCalculator} options={{ title: "EMI Calculator" }} />
-      <Stack.Screen name="FinancePreApprovalForm" component={FinancePreApprovalForm} options={{ title: "Finance Pre-Approval" }} />
+      <Stack.Screen
+        name="BrowseCars"
+        component={BrowseCarsScreen}
+        options={{ title: "Browse Cars" }}
+      />
+      <Stack.Screen
+        name="CarDetails"
+        component={CarDetailScreen}
+        options={{ title: "Car Details" }}
+      />
+      <Stack.Screen
+        name="TradeInEstimation"
+        component={TradeInEstimationScreen}
+        options={{ title: "Trade-In Estimation" }}
+      />
+      <Stack.Screen
+        name="EmiCalculator"
+        component={EmiCalculator}
+        options={{ title: "EMI Calculator" }}
+      />
+      <Stack.Screen
+        name="FinancePreApprovalForm"
+        component={FinancePreApprovalForm}
+        options={{ title: "Finance Pre-Approval" }}
+      />
     </Stack.Navigator>
   );
 }
@@ -71,19 +91,31 @@ export default function App() {
             if (route.name === "Notifications") {
               return <NotificationBadge color={color} size={size} />;
             }
-            
+
             let iconName: keyof typeof Ionicons.glyphMap = "car";
             if (route.name === "Cars") iconName = "car-sport";
             else if (route.name === "Recommendations") iconName = "star";
             else if (route.name === "Wishlist") iconName = "heart";
+            else if (route.name === "Compare") iconName = "git-compare";
             else if (route.name === "Profile") iconName = "person";
             return <Ionicons name={iconName} size={size} color={color} />;
           },
         })}
       >
-        <Tab.Screen name="Cars" component={CarStack} options={{ headerShown: false }} />
+        <Tab.Screen
+          name="Cars"
+          component={CarStack}
+          options={{ headerShown: false }}
+          listeners={({ navigation }) => ({
+            tabPress: (e) => {
+              e.preventDefault(); // stop default behavior
+              navigation.navigate("BrowseCars"); // always go to BrowseCars
+            },
+          })}
+        />
         <Tab.Screen name="Recommendations" component={RecommendationsWrapper} />
         <Tab.Screen name="Wishlist" component={WishlistWrapper} />
+        <Tab.Screen name="Compare" component={CompareScreen} />
         <Tab.Screen name="Notifications" component={NotificationsWrapper} />
         {/* <Tab.Screen name="Profile" component={ProfileScreen} /> */}
       </Tab.Navigator>
