@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Alert,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
+    Alert,
+    KeyboardAvoidingView,
+    Platform,
+    ScrollView,
+    Text,
+    TextInput,
+    TouchableOpacity
 } from 'react-native';
 
 export default function FinancePreApprovalForm() {
@@ -129,7 +128,7 @@ export default function FinancePreApprovalForm() {
           disabled={isSubmitting}
           style={{
             marginTop: 30,
-            backgroundColor: isSubmitting ? '#999' : '#3498db',
+            backgroundColor: isSubmitting ? '#999' : '#171C8F',
             padding: 15,
             borderRadius: 8,
             alignItems: 'center',

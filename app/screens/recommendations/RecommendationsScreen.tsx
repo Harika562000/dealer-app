@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import RecommendationSection from "../../components/RecommendationSection";
+import { useAutoRecommendationRefresh } from "../../hooks/useAutoRecommendationRefresh";
 import {
   clearRecommendations,
   reorderSectionsByEngagement,
@@ -27,6 +28,13 @@ export default function RecommendationsScreen({ navigation }: RecommendationsScr
   const { carViews } = useSelector((state: RootState) => state.userBehavior);
   
   const [refreshing, setRefreshing] = useState(false);
+
+  // Auto-refresh recommendations when user behavior changes
+  useAutoRecommendationRefresh({
+    enabled: true,
+    debounceMs: 2000, // 2 second delay after behavior change
+    significantChangeThreshold: 1 // Refresh after viewing 1 new car
+  });
 
   const handleRefresh = useCallback(async () => {
     setRefreshing(true);
@@ -87,13 +95,13 @@ export default function RecommendationsScreen({ navigation }: RecommendationsScr
             style={styles.actionButton}
             onPress={handleSmartReorder}
           >
-            <Ionicons name="shuffle" size={20} color="#3498db" />
+            <Ionicons name="shuffle" size={20} color="#171C8F" />
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.actionButton}
             onPress={handleClearRecommendations}
           >
-            <Ionicons name="refresh" size={20} color="#3498db" />
+            <Ionicons name="refresh" size={20} color="#171C8F" />
           </TouchableOpacity>
         </View>
       </View>
@@ -239,7 +247,7 @@ const styles = StyleSheet.create({
   statNumber: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#3498db',
+    color: '#171C8F',
   },
   statLabel: {
     fontSize: 12,
@@ -268,7 +276,7 @@ const styles = StyleSheet.create({
   browseCarsButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#3498db',
+    backgroundColor: '#171C8F',
     paddingHorizontal: 24,
     paddingVertical: 12,
     borderRadius: 25,

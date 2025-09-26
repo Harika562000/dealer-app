@@ -104,10 +104,24 @@ export const refreshRecommendations = (dispatch: AppDispatch, getState: () => Ro
 // Helper to check if recommendations need refresh
 export const shouldRefreshRecommendations = (state: RootState): boolean => {
   const { lastRefresh, refreshInterval } = state.recommendations;
+  const { carViews, searchQueries, wishlistActions } = state.userBehavior;
   const now = Date.now();
   
-  // Refresh if never refreshed or interval has passed
-  return !lastRefresh || (now - lastRefresh) > refreshInterval;
+  // Always refresh if never refreshed
+  if (!lastRefresh) return true;
+  
+  // Refresh if interval has passed
+  if ((now - lastRefresh) > refreshInterval) return true;
+  
+  // Refresh if there's been significant new activity since last refresh
+  const recentViews = carViews.filter(view => view.timestamp > lastRefresh);
+  const recentSearches = searchQueries.filter(search => search.timestamp > lastRefresh);
+  const recentWishlistActions = wishlistActions.filter(action => action.timestamp > lastRefresh);
+  
+  // Consider it significant if there are new car views, searches, or wishlist changes
+  const hasSignificantActivity = recentViews.length > 0 || recentSearches.length > 0 || recentWishlistActions.length > 0;
+  
+  return hasSignificantActivity;
 };
 
 // Helper to get recommendations for display

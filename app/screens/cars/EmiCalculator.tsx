@@ -1,15 +1,15 @@
+import { Picker } from "@react-native-picker/picker";
 import React, { useState } from "react";
 import {
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
+    KeyboardAvoidingView,
+    Platform,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
 } from "react-native";
-import { Picker } from "@react-native-picker/picker"; 
 interface LoanOption {
   bank: string;
   rate: number; 
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
   },
   buttonCalculate: {
     flex: 1,
-    backgroundColor: "#3498db",
+    backgroundColor: "#171C8F",
     paddingVertical: 15,
     borderRadius: 8,
     marginRight: 10,

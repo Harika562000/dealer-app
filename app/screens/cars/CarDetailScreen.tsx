@@ -2,8 +2,8 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react";
 import { Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+import { useAutoRecommendationRefresh } from "../../hooks/useAutoRecommendationRefresh";
 import { addToCompare, addToWishlist } from "../../store/carSlice";
-import { RootState } from "../../store/store";
 import { trackCarView, trackWishlistAction } from "../../store/userBehaviorSlice";
 
 type RootStackParamList = {
@@ -19,9 +19,15 @@ type CarDetailScreenProps = NativeStackScreenProps<RootStackParamList, "CarDetai
 export default function CarDetailScreen({ route, navigation }: CarDetailScreenProps) {
   const { car } = route.params;
   const dispatch = useDispatch();
+  const { compareList } = useSelector((state: any) => state.cars);
   const [viewStartTime] = useState(Date.now());
 
-  const compareList = useSelector((state: RootState) => state.cars.compareList);
+  // Auto-refresh recommendations when user views a car (most aggressive refresh)
+  useAutoRecommendationRefresh({
+    enabled: true,
+    debounceMs: 1500, // 1.5 second delay for immediate updates
+    significantChangeThreshold: 1 // Refresh after viewing 1 car
+  });
 
   useEffect(() => {
     dispatch(trackCarView({
@@ -133,7 +139,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
   },
   button: {
-    backgroundColor: "#3498db",
+    backgroundColor: "#171C8F",
     paddingVertical: 15,
     borderRadius: 8,
     marginBottom: 10, // this creates the spacing

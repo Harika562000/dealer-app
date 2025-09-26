@@ -1,16 +1,16 @@
 import { Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
 import {
-  Alert,
-  KeyboardAvoidingView,
-  Modal,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
+    Alert,
+    KeyboardAvoidingView,
+    Modal,
+    Platform,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
 } from "react-native";
 
 interface TradeInForm {
@@ -413,7 +413,7 @@ export default function TradeInEstimationScreen() {
                     {option}
                   </Text>
                   {dropdownField && formData[dropdownField] === option && (
-                    <Ionicons name="checkmark" size={20} color="#3498db" />
+                    <Ionicons name="checkmark" size={20} color="#171C8F" />
                   )}
                 </TouchableOpacity>
               ))}
@@ -461,7 +461,7 @@ const styles = StyleSheet.create({
     color: "#2c3e50",
     marginBottom: 15,
     borderBottomWidth: 2,
-    borderBottomColor: "#3498db",
+    borderBottomColor: "#171C8F",
     paddingBottom: 5,
   },
   inputGroup: {
@@ -561,7 +561,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   selectedModalOptionText: {
-    color: "#3498db",
+    color: "#171C8F",
     fontWeight: "500",
   },
   buttonContainer: {
@@ -578,7 +578,7 @@ const styles = StyleSheet.create({
     flex: 0.48,
   },
   calculateButton: {
-    backgroundColor: "#3498db",
+    backgroundColor: "#171C8F",
   },
   resetButton: {
     backgroundColor: "white",

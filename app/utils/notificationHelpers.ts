@@ -27,7 +27,7 @@ export const getNotificationTypeIcon = (type: string) => {
     case 'new_arrival':
       return { name: 'car', color: '#27ae60' };
     case 'status_change':
-      return { name: 'information-circle', color: '#3498db' };
+      return { name: 'information-circle', color: '#171C8F' };
     case 'wishlist_reminder':
       return { name: 'heart', color: '#e91e63' };
     case 'service_reminder':

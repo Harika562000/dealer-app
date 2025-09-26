@@ -44,7 +44,7 @@ export default function NotificationsScreen({ navigation }: NotificationScreenPr
       case 'new_arrival':
         return { name: 'car' as const, color: '#27ae60' };
       case 'status_change':
-        return { name: 'information-circle' as const, color: '#3498db' };
+        return { name: 'information-circle' as const, color: '#171C8F' };
       case 'wishlist_reminder':
         return { name: 'heart' as const, color: '#e91e63' };
       case 'service_reminder':
@@ -247,7 +247,7 @@ export default function NotificationsScreen({ navigation }: NotificationScreenPr
               style={styles.headerButton}
               onPress={() => setShowSettings(true)}
             >
-              <Ionicons name="settings" size={24} color="#3498db" />
+              <Ionicons name="settings" size={24} color="#171C8F" />
             </TouchableOpacity>
             {unreadCount > 0 && (
               <TouchableOpacity
@@ -332,7 +332,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#ecf0f1",
   },
   activeFilter: {
-    backgroundColor: "#3498db",
+    backgroundColor: "#171C8F",
   },
   filterText: {
     fontSize: 12,
@@ -362,7 +362,7 @@ const styles = StyleSheet.create({
   },
   unreadNotification: {
     borderLeftWidth: 4,
-    borderLeftColor: "#3498db",
+    borderLeftColor: "#171C8F",
   },
   notificationContent: {
     flex: 1,
@@ -404,7 +404,7 @@ const styles = StyleSheet.create({
   },
   carName: {
     fontSize: 12,
-    color: "#3498db",
+    color: "#171C8F",
     fontWeight: "500",
     marginBottom: 4,
   },
@@ -514,7 +514,7 @@ const styles = StyleSheet.create({
     padding: 2,
   },
   toggleActive: {
-    backgroundColor: "#3498db",
+    backgroundColor: "#171C8F",
   },
   toggleThumb: {
     width: 26,
