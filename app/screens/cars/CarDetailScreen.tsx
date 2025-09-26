@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { useDispatch } from "react-redux";
+import { Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import { useAutoRecommendationRefresh } from "../../hooks/useAutoRecommendationRefresh";
 import { addToCompare, addToWishlist } from "../../store/carSlice";
 import { trackCarView, trackWishlistAction } from "../../store/userBehaviorSlice";
@@ -19,6 +19,7 @@ type CarDetailScreenProps = NativeStackScreenProps<RootStackParamList, "CarDetai
 export default function CarDetailScreen({ route, navigation }: CarDetailScreenProps) {
   const { car } = route.params;
   const dispatch = useDispatch();
+  const { compareList } = useSelector((state: any) => state.cars);
   const [viewStartTime] = useState(Date.now());
 
   // Auto-refresh recommendations when user views a car (most aggressive refresh)
