@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useDispatch } from "react-redux";
 import CarCard from "../../components/CarCard";
+import { useAutoRecommendationRefresh } from "../../hooks/useAutoRecommendationRefresh";
 import { recommendationService } from "../../services/recommendationService";
 import { trackSearch } from "../../store/userBehaviorSlice";
 
@@ -23,6 +24,13 @@ export default function BrowseCarsScreen({ navigation }: BrowseCarsScreenProps) 
   const [cars, setCars] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredCars, setFilteredCars] = useState<any[]>([]);
+
+  // Auto-refresh recommendations when user browses cars
+  useAutoRecommendationRefresh({
+    enabled: true,
+    debounceMs: 3000, // 3 second delay
+    significantChangeThreshold: 2 // Refresh after viewing 2 cars
+  });
 
   useEffect(() => {
     // Load cars from service

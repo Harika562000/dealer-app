@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import RecommendationSection from "../../components/RecommendationSection";
+import { useAutoRecommendationRefresh } from "../../hooks/useAutoRecommendationRefresh";
 import {
   clearRecommendations,
   reorderSectionsByEngagement,
@@ -27,6 +28,13 @@ export default function RecommendationsScreen({ navigation }: RecommendationsScr
   const { carViews } = useSelector((state: RootState) => state.userBehavior);
   
   const [refreshing, setRefreshing] = useState(false);
+
+  // Auto-refresh recommendations when user behavior changes
+  useAutoRecommendationRefresh({
+    enabled: true,
+    debounceMs: 2000, // 2 second delay after behavior change
+    significantChangeThreshold: 1 // Refresh after viewing 1 new car
+  });
 
   const handleRefresh = useCallback(async () => {
     setRefreshing(true);
