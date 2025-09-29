@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react";
-import { Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { useAutoRecommendationRefresh } from "../../hooks/useAutoRecommendationRefresh";
 import { addToCompare, addToWishlist } from "../../store/carSlice";
@@ -29,6 +29,14 @@ export default function CarDetailScreen({ route, navigation }: CarDetailScreenPr
     significantChangeThreshold: 1 // Refresh after viewing 1 car
   });
 
+  const showAlert = (title: string, message: string) => {
+    if (Platform.OS === "web") {
+      window.alert(`${title}: ${message}`);
+    } else {
+      Alert.alert(title, message);
+    }
+  };
+  
   useEffect(() => {
     dispatch(trackCarView({
       carId: car.id,
@@ -61,24 +69,24 @@ export default function CarDetailScreen({ route, navigation }: CarDetailScreenPr
       carModel: car.model,
       price: car.price,
     }));
-    Alert.alert("Wishlist", "Car added to your wishlist!");
+    showAlert("Wishlist", "Car added to your wishlist!");
   };
 
   const handleAddToCompare = () => {
     const alreadyAdded = compareList.find((c: any) => c.id === car.id);
     if (alreadyAdded) {
-      Alert.alert("Compare", "Car is already in compare list.");
+      showAlert("Compare", "Car is already in compare list.");
       return;
     }
     if (compareList.length >= 3) {
-      Alert.alert("Compare", "You can only compare up to 3 cars.");
+      showAlert("Compare", "You can only compare up to 3 cars.");
       return;
     }
-    dispatch(addToCompare(car));
-    Alert.alert("Compare", "Car added to compare list!");
-    navigation.navigate("Compare"); // optional
-  };
   
+    dispatch(addToCompare(car));
+    showAlert("Compare", "Car added to compare list!");
+    navigation.navigate("Compare");
+  };
 
   return (
     <ScrollView style={styles.container}>

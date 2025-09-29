@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 // import TestDriveScreen from "./screens/booking/TestDriveScreen";
 import NotificationBadge from "./components/NotificationBadge";
 import BrowseCarsScreen from "./screens/cars/BrowseCarsScreen";
@@ -12,6 +12,7 @@ import TradeInEstimationScreen from "./screens/cars/TradeInEstimationScreen";
 // import ProfileScreen from "./screens/profile/ProfileScreen";
 import EmiCalculator from "./screens/cars/EmiCalculator";
 import FinancePreApprovalForm from "./screens/cars/FinancePreApprovalForm";
+import TabIconWithBadge from "./screens/cars/tabIconWithBadge";
 import NotificationsScreen from "./screens/profile/NotificationsScreen";
 import WishlistScreen from "./screens/profile/WishlistScreen";
 import RecommendationsScreen from "./screens/recommendations/RecommendationsScreen";
@@ -82,43 +83,59 @@ function NotificationsWrapper({ navigation, route }: any) {
   return <NotificationsScreen navigation={navigation} route={route} />;
 }
 
+function RootNavigator() {
+  const compareCount = useSelector((state: any) => state.cars.compareList.length);
+  const wishlistCount = useSelector((state: any) => state.cars.wishlist.length);
+
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ color, size }) => {
+          if (route.name === "Notifications") {
+            return <NotificationBadge color={color} size={size} />;
+          }
+
+          let iconName: keyof typeof Ionicons.glyphMap = "car";
+          let count = 0;
+
+          if (route.name === "Cars") iconName = "car-sport";
+          else if (route.name === "Recommendations") iconName = "star";
+          else if (route.name === "Wishlist") {
+            iconName = "heart";
+            count = wishlistCount;
+          } else if (route.name === "Compare") {
+            iconName = "git-compare";
+            count = compareCount;
+          } else if (route.name === "Profile") iconName = "person";
+
+          return <TabIconWithBadge name={iconName} size={size} color={color} count={count} />;
+        },
+      })}
+    >
+      <Tab.Screen
+        name="Cars"
+        component={CarStack}
+        options={{ headerShown: false }}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.navigate("BrowseCars");
+          },
+        })}
+      />
+      <Tab.Screen name="Recommendations" component={RecommendationsWrapper} />
+      <Tab.Screen name="Wishlist" component={WishlistWrapper} />
+      <Tab.Screen name="Compare" component={CompareScreen} />
+      <Tab.Screen name="Notifications" component={NotificationsWrapper} />
+    </Tab.Navigator>
+  );
+}
+
 export default function App() {
   return (
     <Provider store={store}>
-      <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ color, size }) => {
-            if (route.name === "Notifications") {
-              return <NotificationBadge color={color} size={size} />;
-            }
-
-            let iconName: keyof typeof Ionicons.glyphMap = "car";
-            if (route.name === "Cars") iconName = "car-sport";
-            else if (route.name === "Recommendations") iconName = "star";
-            else if (route.name === "Wishlist") iconName = "heart";
-            else if (route.name === "Compare") iconName = "git-compare";
-            else if (route.name === "Profile") iconName = "person";
-            return <Ionicons name={iconName} size={size} color={color} />;
-          },
-        })}
-      >
-        <Tab.Screen
-          name="Cars"
-          component={CarStack}
-          options={{ headerShown: false }}
-          listeners={({ navigation }) => ({
-            tabPress: (e) => {
-              e.preventDefault(); // stop default behavior
-              navigation.navigate("BrowseCars"); // always go to BrowseCars
-            },
-          })}
-        />
-        <Tab.Screen name="Recommendations" component={RecommendationsWrapper} />
-        <Tab.Screen name="Wishlist" component={WishlistWrapper} />
-        <Tab.Screen name="Compare" component={CompareScreen} />
-        <Tab.Screen name="Notifications" component={NotificationsWrapper} />
-        {/* <Tab.Screen name="Profile" component={ProfileScreen} /> */}
-      </Tab.Navigator>
+      <RootNavigator />
     </Provider>
   );
 }
+
