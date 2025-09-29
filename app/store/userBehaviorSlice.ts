@@ -13,15 +13,18 @@ export interface CarView {
 export interface SearchQuery {
   id: string;
   query: string;
-  filters: {
-    make?: string;
-    model?: string;
-    priceRange?: { min: number; max: number };
-    fuelType?: string;
-    year?: number;
-  };
+  filters: SearchFilters;
   timestamp: number;
   resultsCount: number;
+}
+
+interface SearchFilters {
+  make?: string;
+  model?: string;
+  priceRange?: { min: number; max: number };
+  fuelType?: string;
+  year?: number;
+  vehicleFilter?: "all" | "new" | "preowned";
 }
 
 export interface WishlistAction {

@@ -1,3 +1,4 @@
+import { filterVehicles } from "@/app/utils/helpers/common";
 import { Ionicons } from "@expo/vector-icons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react";
@@ -24,6 +25,7 @@ export default function BrowseCarsScreen({ navigation }: BrowseCarsScreenProps) 
   const [cars, setCars] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredCars, setFilteredCars] = useState<any[]>([]);
+  const [vehicleFilter, setVehicleFilter] = useState<"all" | "new" | "preowned">("all");
 
   // Auto-refresh recommendations when user browses cars
   useAutoRecommendationRefresh({
@@ -40,21 +42,29 @@ export default function BrowseCarsScreen({ navigation }: BrowseCarsScreenProps) 
   }, []);
 
   useEffect(() => {
-    // Filter cars based on search
+    let updatedCars = cars;
+  
+    // Search filter
     if (searchQuery.trim()) {
-      const filtered = recommendationService.searchCars(searchQuery);
-      setFilteredCars(filtered);
-      
-      // Track search behavior
-      dispatch(trackSearch({
-        query: searchQuery,
-        filters: {},
-        resultsCount: filtered.length,
-      }));
-    } else {
-      setFilteredCars(cars);
+      updatedCars = recommendationService.searchCars(searchQuery);
     }
-  }, [searchQuery, cars, dispatch]);
+  
+    // Vehicle type filter using robust function
+    updatedCars = filterVehicles(updatedCars, vehicleFilter);
+  
+    setFilteredCars(updatedCars);
+  
+    // Track search
+    if (searchQuery.trim()) {
+      dispatch(
+        trackSearch({
+          query: searchQuery,
+          filters: {}, // or include your active filters
+          resultsCount: updatedCars.length,
+        })
+      );
+    }
+  }, [searchQuery, cars, vehicleFilter, dispatch]);  
 
   return (
     <View style={styles.container}>
@@ -73,6 +83,47 @@ export default function BrowseCarsScreen({ navigation }: BrowseCarsScreenProps) 
             <Ionicons name="close-circle" size={20} color="#7f8c8d" />
           </TouchableOpacity>
         )}
+      </View>
+
+      <View style={styles.filterContainer}>
+        <TouchableOpacity
+          style={[
+            styles.filterButton,
+            vehicleFilter === "all" && styles.filterButtonActive
+          ]}
+          onPress={() => setVehicleFilter("all")}
+        >
+          <Text style={[
+            styles.filterButtonText,
+            vehicleFilter === "all" && { color: "#FFF" },
+          ]}>All</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[
+            styles.filterButton,
+            vehicleFilter === "new" && styles.filterButtonActive
+          ]}
+          onPress={() => setVehicleFilter("new")}
+        >
+          <Text style={[
+            styles.filterButtonText,
+            vehicleFilter === "new" && { color: "#FFF" },
+          ]}>New</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[
+            styles.filterButton,
+            vehicleFilter === "preowned" && styles.filterButtonActive
+          ]}
+          onPress={() => setVehicleFilter("preowned")}
+        >
+          <Text style={[
+            styles.filterButtonText,
+            vehicleFilter === "preowned" && { color: "#FFF" },
+          ]}>Pre-Owned</Text>
+        </TouchableOpacity>
       </View>
 
       {/* Trade-In Estimation Button */}
@@ -185,4 +236,25 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingBottom: 20,
   },
+  filterContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginHorizontal: 15,
+    marginTop: 5,
+  },
+  filterButton: {
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    marginHorizontal: 5,
+    borderWidth: 1,
+    borderColor: "#171C8F",
+    borderRadius: 20,
+  },
+  filterButtonActive: {
+    backgroundColor: "#171C8F",
+  },
+  filterButtonText: {
+    color: "#171C8F",
+    fontWeight: "600",
+  },  
 });
