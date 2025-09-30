@@ -31,7 +31,7 @@ export default function CompareScreen() {
       <ScrollView horizontal contentContainerStyle={styles.scrollContainer} showsHorizontalScrollIndicator={false}>
         {compareList.map((car) => (
           <View key={car.id} style={styles.card}>
-            <Image source={{ uri: car.image }} style={styles.image} />
+            <Image source={typeof car.image === "string" ? { uri: car.image } : car.image} style={styles.image} />
             <Text style={styles.title}>{car.make} {car.model}</Text>
             <Text style={styles.price}>₹{car.price.toLocaleString()}</Text>
             <Text style={styles.originalPrice}>Original: ₹{car.originalPrice?.toLocaleString()}</Text>

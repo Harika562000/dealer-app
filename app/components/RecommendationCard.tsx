@@ -1,11 +1,11 @@
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import {
-    Image,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { useDispatch } from "react-redux";
 import { RecommendationResult } from "../services/recommendationService";
@@ -74,7 +74,7 @@ export default function RecommendationCard({
   if (compact) {
     return (
       <TouchableOpacity style={styles.compactCard} onPress={handleCardPress}>
-        <Image source={{ uri: car.image }} style={styles.compactImage} />
+        <Image source={typeof car.image === "string" ? { uri: car.image } : car.image} style={styles.compactImage} />
         <View style={styles.compactInfo}>
           <Text style={styles.compactTitle} numberOfLines={1}>
             {car.make} {car.model}
@@ -116,7 +116,7 @@ export default function RecommendationCard({
 
       {/* Car Image */}
       <View style={styles.imageContainer}>
-        <Image source={{ uri: car.image }} style={styles.carImage} />
+        <Image source={typeof car.image === "string" ? { uri: car.image } : car.image} style={styles.carImage} />
         {car.isNew && (
           <View style={styles.newBadge}>
             <Text style={styles.newBadgeText}>NEW</Text>

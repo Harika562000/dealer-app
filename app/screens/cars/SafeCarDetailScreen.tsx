@@ -21,7 +21,7 @@ type CarDetailScreenProps = NativeStackScreenProps<RootStackParamList, "CarDetai
 const SafeCarImage = ({ car }: { car: any }) => (
   <ComponentErrorBoundary componentName="CarImage">
     <Image 
-      source={{ uri: car.image }} 
+      source={typeof car.image === "string" ? { uri: car.image } : car.image}
       style={styles.image}
       onError={(error) => {
         console.log('Image load error:', error);
