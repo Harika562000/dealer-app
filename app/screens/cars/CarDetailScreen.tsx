@@ -90,7 +90,7 @@ export default function CarDetailScreen({ route, navigation }: CarDetailScreenPr
 
   return (
     <ScrollView style={styles.container}>
-      <Image source={{ uri: car.image }} style={styles.image} />
+      <Image source={typeof car.image === "string" ? { uri: car.image } : car.image} style={styles.image} />
 
       <Text style={styles.title}>{car.make} {car.model}</Text>
       <Text style={styles.price}>₹{car.price.toLocaleString()}</Text>

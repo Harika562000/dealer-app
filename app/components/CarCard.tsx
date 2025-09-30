@@ -51,7 +51,7 @@ export default function CarCard({ car, onPress }: CarCardProps) {
   return (
     <TouchableOpacity style={styles.card} onPress={onPress}>
       <View>
-        <Image source={{ uri: car.image }} style={styles.image} />
+        <Image source={typeof car.image === "string" ? { uri: car.image } : car.image} style={styles.image} />
         {discountPercent > 0 && (
           <View style={styles.discountBadge}>
             <Text style={styles.discountText}>{discountPercent}% OFF</Text>
