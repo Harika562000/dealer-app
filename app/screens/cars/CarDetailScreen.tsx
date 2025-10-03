@@ -10,7 +10,9 @@ type RootStackParamList = {
   BrowseCars: undefined;
   CarDetails: { car: any };
   Compare: undefined;
+  TradeInEstimation: undefined;
   FinancePreApprovalForm: undefined;
+  ServiceBooking: undefined;
   TestDrive: { car: any };
 };
 
@@ -127,6 +129,12 @@ export default function CarDetailScreen({ route, navigation }: CarDetailScreenPr
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("FinancePreApprovalForm")}>
           <Text style={styles.buttonText}>FINANCE PRE-APPROVAL</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("TradeInEstimation")}>
+          <Text style={styles.buttonText}>TRADE-IN ESTIMATION</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("ServiceBooking")}>
+          <Text style={styles.buttonText}>BOOK SERVICE</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
