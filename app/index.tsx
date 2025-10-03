@@ -3,20 +3,22 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import { Provider, useSelector } from "react-redux";
-// import TestDriveScreen from "./screens/booking/TestDriveScreen";
+import { PersistGate } from "redux-persist/integration/react";
 import NotificationBadge from "./components/NotificationBadge";
+import ServiceBookingScreen from "./screens/booking/ServiceBookingScreen";
+import ServiceHistoryScreen from "./screens/booking/ServiceHistoryScreen";
+import ServiceTrackingScreen from "./screens/booking/ServiceTrackingScreen";
 import BrowseCarsScreen from "./screens/cars/BrowseCarsScreen";
 import CarDetailScreen from "./screens/cars/CarDetailScreen";
 import CompareScreen from "./screens/cars/CompareScreen";
-import TradeInEstimationScreen from "./screens/cars/TradeInEstimationScreen";
-// import ProfileScreen from "./screens/profile/ProfileScreen";
 import EmiCalculator from "./screens/cars/EmiCalculator";
 import FinancePreApprovalForm from "./screens/cars/FinancePreApprovalForm";
 import TabIconWithBadge from "./screens/cars/tabIconWithBadge";
+import TradeInEstimationScreen from "./screens/cars/TradeInEstimationScreen";
 import NotificationsScreen from "./screens/profile/NotificationsScreen";
 import WishlistScreen from "./screens/profile/WishlistScreen";
 import RecommendationsScreen from "./screens/recommendations/RecommendationsScreen";
-import { store } from "./store/store";
+import { persistor, store } from "./store/store";
 
 type RootTabParamList = {
   Cars: undefined;
@@ -24,6 +26,7 @@ type RootTabParamList = {
   Wishlist: undefined;
   Notifications: undefined;
   Compare: undefined;
+  Service: undefined;
   Profile: undefined;
 };
 
@@ -34,6 +37,13 @@ type RootStackParamList = {
   TradeInEstimation: undefined;
   EmiCalculator: undefined;
   FinancePreApprovalForm: undefined;
+  ServiceBooking: undefined;
+  ServiceHistory: undefined;
+  ServiceTracking: { bookingId: string };
+  // Service tab stack screens
+  ServiceBookingTab: undefined;
+  ServiceTrackingTab: { bookingId: string };
+  ServiceHistoryTab: undefined;
 };
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
@@ -67,6 +77,21 @@ function CarStack() {
         component={FinancePreApprovalForm}
         options={{ title: "Finance Pre-Approval" }}
       />
+      <Stack.Screen
+        name="ServiceBooking"
+        component={ServiceBookingScreen}
+        options={{ title: "Service Booking" }}
+      />
+      <Stack.Screen
+        name="ServiceHistory"
+        component={ServiceHistoryScreen}
+        options={{ title: "Service History" }}
+      />
+      <Stack.Screen
+        name="ServiceTracking"
+        component={ServiceTrackingScreen}
+        options={{ title: "Service Tracking" }}
+      />
     </Stack.Navigator>
   );
 }
@@ -81,6 +106,10 @@ function WishlistWrapper({ navigation, route }: any) {
 
 function NotificationsWrapper({ navigation, route }: any) {
   return <NotificationsScreen navigation={navigation} route={route} />;
+}
+
+function ServiceWrapper({ navigation, route }: any) {
+  return <ServiceBookingScreen navigation={navigation} route={route} />;
 }
 
 function RootNavigator() {
@@ -106,7 +135,8 @@ function RootNavigator() {
           } else if (route.name === "Compare") {
             iconName = "git-compare";
             count = compareCount;
-          } else if (route.name === "Profile") iconName = "person";
+          } else if (route.name === "Service") iconName = "construct";
+          else if (route.name === "Profile") iconName = "person";
 
           return <TabIconWithBadge name={iconName} size={size} color={color} count={count} />;
         },
@@ -126,6 +156,7 @@ function RootNavigator() {
       <Tab.Screen name="Recommendations" component={RecommendationsWrapper} />
       <Tab.Screen name="Wishlist" component={WishlistWrapper} />
       <Tab.Screen name="Compare" component={CompareScreen} />
+      <Tab.Screen name="Service" component={ServiceWrapper} />
       <Tab.Screen name="Notifications" component={NotificationsWrapper} />
     </Tab.Navigator>
   );
@@ -134,7 +165,9 @@ function RootNavigator() {
 export default function App() {
   return (
     <Provider store={store}>
-      <RootNavigator />
+      <PersistGate loading={null} persistor={persistor}>
+        <RootNavigator />
+      </PersistGate>
     </Provider>
   );
 }
