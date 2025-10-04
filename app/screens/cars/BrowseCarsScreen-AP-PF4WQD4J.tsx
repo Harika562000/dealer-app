@@ -126,8 +126,6 @@ export default function BrowseCarsScreen({ navigation }: BrowseCarsScreenProps) 
         </TouchableOpacity>
       </View>
 
-     
-
       {/* Results Count */}
       <View style={styles.resultsHeader}>
         <Text style={styles.resultsText}>

@@ -11,9 +11,9 @@ type RootStackParamList = {
   CarDetails: { car: any };
   Compare: undefined;
   FinancePreApprovalForm: undefined;
-  TestDrive: { car: any };
-  TradeInEstimation: undefined;
   EmiCalculator: undefined;
+  TradeInEstimation: undefined;
+  TestDrive: { car: any };
 };
 
 type CarDetailScreenProps = NativeStackScreenProps<RootStackParamList, "CarDetails">;
@@ -130,29 +130,12 @@ export default function CarDetailScreen({ route, navigation }: CarDetailScreenPr
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("FinancePreApprovalForm")}>
           <Text style={styles.buttonText}>FINANCE PRE-APPROVAL</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("TradeInEstimation")}>
-          <Text style={styles.buttonText}>Get Trade-In Value</Text>
-        </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("EmiCalculator")}>
-          <Text style={styles.buttonText}>Calculate EMI</Text>
+          <Text style={styles.buttonText}>CALCULATE EMI</Text>
         </TouchableOpacity>
-         {/* Trade-In Estimation Button 
-              <TouchableOpacity
-                style={styles.tradeInButton}
-                onPress={() => navigation.navigate("TradeInEstimation")}
-              >
-                <Ionicons name="calculator-outline" size={20} color="white" />
-                <Text style={styles.tradeInButtonText}>Get Trade-In Value</Text>
-              </TouchableOpacity>
-        
-        
-              <TouchableOpacity
-                style={styles.tradeInButton}
-                onPress={() => navigation.navigate("EmiCalculator")}
-              >
-                <Ionicons name="calculator-outline" size={20} color="white" />
-                <Text style={styles.tradeInButtonText}>Calculate EMI</Text>
-              </TouchableOpacity> */}
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("TradeInEstimation")}>
+          <Text style={styles.buttonText}>GET TRADE-IN VALUE</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
