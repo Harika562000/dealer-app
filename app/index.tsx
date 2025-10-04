@@ -3,7 +3,10 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import { Provider, useSelector } from "react-redux";
-// import TestDriveScreen from "./screens/booking/TestDriveScreen";
+import BookTestDriveStep1 from "./screens/booking/BookTestDrive/BookTestDrive1";
+import BookTestDriveStep2 from "./screens/booking/BookTestDrive/BookTestDrive2";
+import BookTestDriveStep3 from "./screens/booking/BookTestDrive/BookTestDrive3";
+import BookTestDriveStep4 from "./screens/booking/BookTestDrive/BookTestDrive4";
 import NotificationBadge from "./components/NotificationBadge";
 import BrowseCarsScreen from "./screens/cars/BrowseCarsScreen";
 import CarDetailScreen from "./screens/cars/CarDetailScreen";
@@ -34,6 +37,10 @@ type RootStackParamList = {
   TradeInEstimation: undefined;
   EmiCalculator: undefined;
   FinancePreApprovalForm: undefined;
+  BookTestDriveStep1: { car: any };
+  BookTestDriveStep2: { car: any; userInfo: { name: string; email: string; phone: string } };
+  BookTestDriveStep3: { car: any; userInfo: { name: string; email: string; phone: string }; date: string; time: string };
+  BookTestDriveStep4: { car: any; userInfo: { name: string; email: string; phone: string }; date: string; time: string; dealer: any };
 };
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
@@ -66,6 +73,26 @@ function CarStack() {
         name="FinancePreApprovalForm"
         component={FinancePreApprovalForm}
         options={{ title: "Finance Pre-Approval" }}
+      />
+      <Stack.Screen
+        name="BookTestDriveStep1"
+        component={BookTestDriveStep1}
+        options={{ title: "Book Test Drive" }}
+      />
+      <Stack.Screen
+        name="BookTestDriveStep2"
+        component={BookTestDriveStep2}
+        options={{ title: "Book Test Drive" }}
+      />
+      <Stack.Screen
+        name="BookTestDriveStep3"
+        component={BookTestDriveStep3}
+        options={{ title: "Book Test Drive" }}
+      />
+      <Stack.Screen
+        name="BookTestDriveStep4"
+        component={BookTestDriveStep4}
+        options={{ title: "Book Test Drive" }}
       />
     </Stack.Navigator>
   );
