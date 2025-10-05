@@ -11,6 +11,10 @@ type RootStackParamList = {
   CarDetails: { car: any };
   Compare: undefined;
   FinancePreApprovalForm: undefined;
+  BookTestDriveStep1: { car: any };
+  BookTestDriveStep2: { car: any; userInfo: { name: string; email: string; phone: string } };
+  BookTestDriveStep3: { car: any; userInfo: { name: string; email: string; phone: string }; date: string; time: string };
+  BookTestDriveStep4: { car: any; userInfo: { name: string; email: string; phone: string }; date: string; time: string; dealer: any };
   TestDrive: { car: any };
   TradeInEstimation: undefined;
   EmiCalculator: undefined;
@@ -124,7 +128,7 @@ export default function CarDetailScreen({ route, navigation }: CarDetailScreenPr
         <TouchableOpacity style={styles.button} onPress={handleAddToCompare}>
           <Text style={styles.buttonText}>ADD TO COMPARE</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("TestDrive", { car })}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("BookTestDriveStep1", { car })}>
           <Text style={styles.buttonText}>BOOK TEST DRIVE</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("FinancePreApprovalForm")}>

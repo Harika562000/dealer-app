@@ -3,6 +3,7 @@ import carReducer from "./carSlice";
 import notificationReducer from "./notificationSlice";
 import recommendationReducer from "./recommendationSlice";
 import userBehaviorReducer from "./userBehaviorSlice";
+import bookedTestDrivesReducer from "./bookedTestDriveSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     notifications: notificationReducer,
     userBehavior: userBehaviorReducer,
     recommendations: recommendationReducer,
+    bookedTestDrives: bookedTestDrivesReducer,
   },
 });
 

@@ -120,7 +120,10 @@ const notificationSlice = createSlice({
   name: "notifications",
   initialState,
   reducers: {
-    addNotification: (state, action: PayloadAction<Omit<Notification, 'id' | 'timestamp' | 'isRead'>>) => {
+    addNotification: (
+      state,
+      action: PayloadAction<Omit<Notification, "id" | "timestamp" | "isRead">>
+    ) => {
       const newNotification: Notification = {
         ...action.payload,
         id: Date.now().toString(),
@@ -131,14 +134,16 @@ const notificationSlice = createSlice({
       state.unreadCount += 1;
     },
     markAsRead: (state, action: PayloadAction<string>) => {
-      const notification = state.notifications.find(n => n.id === action.payload);
+      const notification = state.notifications.find(
+        (n) => n.id === action.payload
+      );
       if (notification && !notification.isRead) {
         notification.isRead = true;
         state.unreadCount -= 1;
       }
     },
     markAllAsRead: (state) => {
-      state.notifications.forEach(notification => {
+      state.notifications.forEach((notification) => {
         if (!notification.isRead) {
           notification.isRead = true;
         }
@@ -146,28 +151,45 @@ const notificationSlice = createSlice({
       state.unreadCount = 0;
     },
     deleteNotification: (state, action: PayloadAction<string>) => {
-      const notification = state.notifications.find(n => n.id === action.payload);
+      const notification = state.notifications.find(
+        (n) => n.id === action.payload
+      );
       if (notification && !notification.isRead) {
         state.unreadCount -= 1;
       }
-      state.notifications = state.notifications.filter(n => n.id !== action.payload);
+      state.notifications = state.notifications.filter(
+        (n) => n.id !== action.payload
+      );
     },
     clearAllNotifications: (state) => {
       state.notifications = [];
       state.unreadCount = 0;
     },
-    updateSettings: (state, action: PayloadAction<Partial<NotificationSettings>>) => {
+    updateSettings: (
+      state,
+      action: PayloadAction<Partial<NotificationSettings>>
+    ) => {
       state.settings = { ...state.settings, ...action.payload };
     },
     // Simulate price drop notification
-    simulatePriceDrop: (state, action: PayloadAction<{ carId: string; carName: string; oldPrice: number; newPrice: number }>) => {
+    simulatePriceDrop: (
+      state,
+      action: PayloadAction<{
+        carId: string;
+        carName: string;
+        oldPrice: number;
+        newPrice: number;
+      }>
+    ) => {
       if (state.settings.priceDropAlerts) {
         const { carId, carName, oldPrice, newPrice } = action.payload;
         const newNotification: Notification = {
           id: Date.now().toString(),
           type: "price_drop",
           title: "Price Drop Alert!",
-          message: `${carName} price has dropped by ₹${(oldPrice - newPrice).toLocaleString()}`,
+          message: `${carName} price has dropped by ₹${(
+            oldPrice - newPrice
+          ).toLocaleString()}`,
           carId,
           carName,
           oldPrice,
@@ -181,7 +203,10 @@ const notificationSlice = createSlice({
       }
     },
     // Simulate new arrival notification
-    simulateNewArrival: (state, action: PayloadAction<{ carId: string; carName: string }>) => {
+    simulateNewArrival: (
+      state,
+      action: PayloadAction<{ carId: string; carName: string }>
+    ) => {
       if (state.settings.newArrivalAlerts) {
         const { carId, carName } = action.payload;
         const newNotification: Notification = {
@@ -199,6 +224,34 @@ const notificationSlice = createSlice({
         state.unreadCount += 1;
       }
     },
+    // inside reducers of notificationSlice
+    addTestDriveNotification: (
+      state,
+      action: PayloadAction<{
+        carId: string;
+        carName: string;
+        dealerName: string;
+        date: string;
+        time: string;
+      }>
+    ) => {
+      const { carId, carName, dealerName, date, time } = action.payload;
+
+      const newNotification: Notification = {
+        id: Date.now().toString(),
+        type: "status_change", // you can use 'general' too
+        title: "Test Drive Booked",
+        message: `Your test drive for ${carName} with ${dealerName} is scheduled on ${date} at ${time}.`,
+        carId,
+        carName,
+        timestamp: Date.now(),
+        isRead: false,
+        priority: "medium",
+      };
+
+      state.notifications.unshift(newNotification);
+      state.unreadCount += 1;
+    },
   },
 });
 
@@ -211,6 +264,7 @@ export const {
   updateSettings,
   simulatePriceDrop,
   simulateNewArrival,
+  addTestDriveNotification, 
 } = notificationSlice.actions;
 
 export default notificationSlice.reducer;
