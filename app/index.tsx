@@ -53,17 +53,17 @@ type RootStackParamList = {
   Profile: undefined;
   ChatScreen: undefined;
 };
-
+ 
 const Tab = createBottomTabNavigator<RootTabParamList>();
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 // Animated header component
 function AnimatedHeaderTitle() {
-  const translateX = useRef(new Animated.Value(-40)).current;
+  const translateX = useRef(new Animated.Value(-20)).current;
 
   useEffect(() => {
     Animated.timing(translateX, {
-      toValue: 0,
+      toValue: 4,
       duration: 800,
       useNativeDriver: true,
     }).start();
@@ -77,8 +77,8 @@ function AnimatedHeaderTitle() {
       <Animated.Image
         source={require("../assets/images/car.png")}
         style={{
-          width: 24,
-          height: 24,
+          width: 64,
+          height: 64,
           marginRight: 6,
           transform: [{ translateX }],
         }}
