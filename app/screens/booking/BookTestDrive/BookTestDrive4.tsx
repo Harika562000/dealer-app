@@ -1,6 +1,9 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Modal, Image, ScrollView } from "react-native";
+import { useDispatch } from "react-redux";
+import { addTestDrive } from "@/app/store/bookedTestDriveSlice";
+import { addTestDriveNotification } from "@/app/store/notificationSlice"; // <-- import notification action
 
 type RootStackParamList = {
   BookTestDriveStep4: { car: any; userInfo: any; date: string; time: string; dealer: any };
@@ -11,6 +14,32 @@ type Props = NativeStackScreenProps<RootStackParamList, "BookTestDriveStep4">;
 export default function BookTestDriveStep4({ route, navigation }: Props) {
   const { car, userInfo, date, time, dealer } = route.params;
   const [modalVisible, setModalVisible] = useState(false);
+  const dispatch = useDispatch();
+
+  const handleConfirm = () => {
+    const newDrive = {
+      id: Date.now().toString(),
+      car,
+      userInfo,
+      date,
+      time,
+      dealer,
+    };
+
+    dispatch(addTestDrive(newDrive));
+
+    dispatch(
+      addTestDriveNotification({
+        carId: car.id,
+        carName: `${car.make} ${car.model}`,
+        dealerName: dealer.dealerName,
+        date,
+        time,
+      })
+    );
+
+    setModalVisible(true);
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -21,6 +50,7 @@ export default function BookTestDriveStep4({ route, navigation }: Props) {
         <View style={[styles.progressStep, styles.activeStep]} />
         <View style={[styles.progressStep, styles.activeStep]} />
       </View>
+
       <Text style={styles.stepText}>Step 4 of 4: Overview</Text>
 
       {/* Car Image */}
@@ -45,20 +75,21 @@ export default function BookTestDriveStep4({ route, navigation }: Props) {
 
       <View style={styles.detailCard}>
         <Text style={styles.detailTitle}>Dealer</Text>
-        <Text style={styles.detailText}>{dealer?.dealerName} - {dealer?.location}</Text>
+        <Text style={styles.detailText}>
+          {dealer?.dealerName} - {dealer?.location}
+        </Text>
         <Text style={styles.detailText}>Phone: {dealer?.phone}</Text>
       </View>
 
       <View style={styles.detailCard}>
         <Text style={styles.detailTitle}>Car</Text>
-        <Text style={styles.detailText}>{car.make} {car.model}</Text>
+        <Text style={styles.detailText}>
+          {car.make} {car.model}
+        </Text>
       </View>
 
       {/* Confirm Button */}
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => setModalVisible(true)}
-      >
+      <TouchableOpacity style={styles.button} onPress={handleConfirm}>
         <Text style={styles.buttonText}>Confirm</Text>
       </TouchableOpacity>
 
@@ -66,10 +97,15 @@ export default function BookTestDriveStep4({ route, navigation }: Props) {
       <Modal visible={modalVisible} transparent>
         <View style={styles.modalContainer}>
           <View style={styles.modalBox}>
-            <Text style={styles.modalTitle}>🎉 Test Drive Booked Successfully!</Text>
+            <Text style={styles.modalTitle}>
+              🎉 Test Drive Booked Successfully!
+            </Text>
             <TouchableOpacity
               style={styles.button}
-              onPress={() => navigation.navigate("CarDetails", { car })}
+              onPress={() => {
+                setModalVisible(false);
+                navigation.navigate("CarDetails", { car });
+              }}
             >
               <Text style={styles.buttonText}>Back to Car Detail</Text>
             </TouchableOpacity>
@@ -93,6 +129,6 @@ const styles = StyleSheet.create({
   button: { backgroundColor: "#171C8F", padding: 15, borderRadius: 8, alignItems: "center", marginTop: 10 },
   buttonText: { color: "#fff", fontWeight: "bold", fontSize: 15 },
   modalContainer: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "rgba(0,0,0,0.5)" },
-  modalBox: { backgroundColor: "#fff", padding: 20, borderRadius: 12, width: "80%",height: "27%", alignItems: "center", justifyContent:"center" },
+  modalBox: { backgroundColor: "#fff", padding: 20, borderRadius: 12, width: "80%", height: "27%", alignItems: "center", justifyContent: "center" },
   modalTitle: { fontSize: 18, fontWeight: "bold", marginBottom: 20, textAlign: "center" },
 });

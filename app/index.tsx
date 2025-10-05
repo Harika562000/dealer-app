@@ -12,7 +12,7 @@ import BrowseCarsScreen from "./screens/cars/BrowseCarsScreen";
 import CarDetailScreen from "./screens/cars/CarDetailScreen";
 import CompareScreen from "./screens/cars/CompareScreen";
 import TradeInEstimationScreen from "./screens/cars/TradeInEstimationScreen";
-// import ProfileScreen from "./screens/profile/ProfileScreen";
+import ProfileScreen from "./screens/auth/ProfileScreen";
 import EmiCalculator from "./screens/cars/EmiCalculator";
 import FinancePreApprovalForm from "./screens/cars/FinancePreApprovalForm";
 import TabIconWithBadge from "./screens/cars/tabIconWithBadge";
@@ -20,6 +20,7 @@ import NotificationsScreen from "./screens/profile/NotificationsScreen";
 import WishlistScreen from "./screens/profile/WishlistScreen";
 import RecommendationsScreen from "./screens/recommendations/RecommendationsScreen";
 import { store } from "./store/store";
+import { TouchableOpacity } from "react-native";
 
 type RootTabParamList = {
   Cars: undefined;
@@ -41,6 +42,7 @@ type RootStackParamList = {
   BookTestDriveStep2: { car: any; userInfo: { name: string; email: string; phone: string } };
   BookTestDriveStep3: { car: any; userInfo: { name: string; email: string; phone: string }; date: string; time: string };
   BookTestDriveStep4: { car: any; userInfo: { name: string; email: string; phone: string }; date: string; time: string; dealer: any };
+  Profile: undefined;
 };
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
@@ -52,7 +54,21 @@ function CarStack() {
       <Stack.Screen
         name="BrowseCars"
         component={BrowseCarsScreen}
-        options={{ title: "Browse Cars" }}
+        options={({ navigation }) => ({
+          title: "Browse Cars",
+          headerRight: () => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Profile")} // Navigate to your Profile screen
+              style={{ marginRight: 16 }}
+            >
+              <Ionicons
+                name="person-circle-outline"
+                size={33}
+                color="#171C8F"
+              />
+            </TouchableOpacity>
+          ),
+        })}
       />
       <Stack.Screen
         name="CarDetails"
@@ -93,6 +109,11 @@ function CarStack() {
         name="BookTestDriveStep4"
         component={BookTestDriveStep4}
         options={{ title: "Book Test Drive" }}
+      />
+      <Stack.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{ title: "Profile" }}
       />
     </Stack.Navigator>
   );
