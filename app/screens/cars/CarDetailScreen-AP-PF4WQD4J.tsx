@@ -11,13 +11,9 @@ type RootStackParamList = {
   CarDetails: { car: any };
   Compare: undefined;
   FinancePreApprovalForm: undefined;
-  BookTestDriveStep1: { car: any };
-  BookTestDriveStep2: { car: any; userInfo: { name: string; email: string; phone: string } };
-  BookTestDriveStep3: { car: any; userInfo: { name: string; email: string; phone: string }; date: string; time: string };
-  BookTestDriveStep4: { car: any; userInfo: { name: string; email: string; phone: string }; date: string; time: string; dealer: any };
-  TestDrive: { car: any };
-  TradeInEstimation: undefined;
   EmiCalculator: undefined;
+  TradeInEstimation: undefined;
+  TestDrive: { car: any };
 };
 
 type CarDetailScreenProps = NativeStackScreenProps<RootStackParamList, "CarDetails">;
@@ -128,35 +124,18 @@ export default function CarDetailScreen({ route, navigation }: CarDetailScreenPr
         <TouchableOpacity style={styles.button} onPress={handleAddToCompare}>
           <Text style={styles.buttonText}>ADD TO COMPARE</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("BookTestDriveStep1", { car })}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("TestDrive", { car })}>
           <Text style={styles.buttonText}>BOOK TEST DRIVE</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("FinancePreApprovalForm")}>
           <Text style={styles.buttonText}>FINANCE PRE-APPROVAL</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("TradeInEstimation")}>
-          <Text style={styles.buttonText}>Get Trade-In Value</Text>
-        </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("EmiCalculator")}>
-          <Text style={styles.buttonText}>Calculate EMI</Text>
+          <Text style={styles.buttonText}>CALCULATE EMI</Text>
         </TouchableOpacity>
-         {/* Trade-In Estimation Button 
-              <TouchableOpacity
-                style={styles.tradeInButton}
-                onPress={() => navigation.navigate("TradeInEstimation")}
-              >
-                <Ionicons name="calculator-outline" size={20} color="white" />
-                <Text style={styles.tradeInButtonText}>Get Trade-In Value</Text>
-              </TouchableOpacity>
-        
-        
-              <TouchableOpacity
-                style={styles.tradeInButton}
-                onPress={() => navigation.navigate("EmiCalculator")}
-              >
-                <Ionicons name="calculator-outline" size={20} color="white" />
-                <Text style={styles.tradeInButtonText}>Calculate EMI</Text>
-              </TouchableOpacity> */}
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("TradeInEstimation")}>
+          <Text style={styles.buttonText}>GET TRADE-IN VALUE</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );

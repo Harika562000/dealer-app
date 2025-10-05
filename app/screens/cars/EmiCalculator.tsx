@@ -1,19 +1,20 @@
 import { Picker } from "@react-native-picker/picker";
 import React, { useState } from "react";
 import {
-    KeyboardAvoidingView,
-    Platform,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
+
 interface LoanOption {
   bank: string;
-  rate: number; 
-  tenure: number; 
+  rate: number;
+  tenure: number;
 }
 
 export default function EmiCalculator() {
@@ -40,15 +41,11 @@ export default function EmiCalculator() {
     return numerator / denominator;
   };
 
-  const isValidPrincipal = () => {
-    const P = parseFloat(principal);
-    return !isNaN(P) && P > 0;
-  };
-
   const onCalculate = () => {
     const P = parseFloat(principal);
-    if (!isValidPrincipal()) {
-      setError("Please enter a valid principal amount.");
+
+    if (isNaN(P) || P <= 0) {
+      setError("This field is required");
       setEmi(null);
       setTotalPayment(null);
       setTotalInterest(null);
@@ -85,20 +82,31 @@ export default function EmiCalculator() {
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
+      <View style={styles.header}>
+        <Text style={styles.title}>Emi Calculator</Text>
+        <Text style={styles.subtitle}>
+          Enter all the details to get an instant EMI calculation
+        </Text>
+      </View>
+
       <ScrollView
         contentContainerStyle={styles.scrollContainer}
         keyboardShouldPersistTaps="handled"
       >
-        <Text style={styles.title}>EMI Calculator</Text>
-
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Loan Amount (Principal) ₹ *</Text>
           <TextInput
-            style={styles.input}
+            style={[
+              styles.input,
+              error ? styles.inputError : null,
+            ]}
             keyboardType="numeric"
             placeholder="Enter principal amount"
             value={principal}
-            onChangeText={setPrincipal}
+            onChangeText={(text) => {
+              setPrincipal(text);
+              if (error) setError(null);
+            }}
           />
           {error && <Text style={styles.errorText}>{error}</Text>}
         </View>
@@ -108,7 +116,9 @@ export default function EmiCalculator() {
           <View style={styles.pickerWrapper}>
             <Picker
               selectedValue={selectedLoanIndex}
-              onValueChange={(itemValue: number) => setSelectedLoanIndex(itemValue)}
+              onValueChange={(itemValue: number) =>
+                setSelectedLoanIndex(itemValue)
+              }
               style={styles.picker}
             >
               {loanOptions.map((loan, idx) => (
@@ -142,9 +152,8 @@ export default function EmiCalculator() {
 
         <View style={styles.buttonRow}>
           <TouchableOpacity
-            style={[styles.buttonCalculate, !isValidPrincipal() && styles.buttonDisabled]}
+            style={styles.buttonCalculate}
             onPress={onCalculate}
-            disabled={!isValidPrincipal()}
           >
             <Text style={styles.buttonText}>Calculate EMI</Text>
           </TouchableOpacity>
@@ -184,12 +193,21 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingBottom: 40,
   },
+  header: {
+    backgroundColor: "#171C8F",
+    padding: 20,
+    paddingTop: 40,
+  },
   title: {
-    fontSize: 28,
-    fontWeight: "700",
-    color: "#34495e",
-    marginBottom: 25,
-    textAlign: "center",
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "white",
+    marginBottom: 8,
+  },
+  subtitle: {
+    fontSize: 16,
+    color: "#ecf0f1",
+    lineHeight: 22,
   },
   inputGroup: {
     marginBottom: 20,
@@ -208,6 +226,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     borderWidth: 1,
     borderColor: "#d1d5db",
+  },
+  inputError: {
+    borderColor: "#e74c3c",
   },
   disabledInput: {
     backgroundColor: "#ecf0f1",
@@ -236,9 +257,6 @@ const styles = StyleSheet.create({
     marginRight: 10,
     alignItems: "center",
   },
-  buttonDisabled: {
-    backgroundColor: "#95a5a6",
-  },
   buttonReset: {
     flex: 1,
     backgroundColor: "#ecf0f1",
@@ -258,8 +276,8 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: "#2ecc71",
-    shadowColor: "#27ae60",
+    borderColor: "#171C8F",
+    shadowColor: "#171C8F",
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.15,
     shadowRadius: 6,
@@ -268,7 +286,7 @@ const styles = StyleSheet.create({
   resultTitle: {
     fontSize: 20,
     fontWeight: "700",
-    color: "#27ae60",
+    color: "#171C8F",
     marginBottom: 15,
     textAlign: "center",
   },
