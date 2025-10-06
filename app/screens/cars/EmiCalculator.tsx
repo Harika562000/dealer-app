@@ -44,15 +44,25 @@ export default function EmiCalculator() {
   const onCalculate = () => {
     const P = parseFloat(principal);
 
-    if (isNaN(P) || P <= 0) {
-      setError("This field is required");
+    let hasError = false;
+
+    // ✅ Validate principal
+    if (!principal || isNaN(P) || P <= 10000) {
+      setError("Enter a valid loan amount greater than ₹10,000");
+      hasError = true;
+    } else if (P > 5000000) {
+      setError("Loan amount should not exceed ₹50,00,000");
+      hasError = true;
+    } else {
+      setError(null);
+    }
+
+    if (hasError) {
       setEmi(null);
       setTotalPayment(null);
       setTotalInterest(null);
       return;
     }
-
-    setError(null);
 
     const selectedLoan = loanOptions[selectedLoanIndex];
     const { rate, tenure } = selectedLoan;
@@ -83,7 +93,7 @@ export default function EmiCalculator() {
       behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
       <View style={styles.header}>
-        <Text style={styles.title}>Emi Calculator</Text>
+        <Text style={styles.title}>EMI Calculator</Text>
         <Text style={styles.subtitle}>
           Enter all the details to get an instant EMI calculation
         </Text>
@@ -93,32 +103,29 @@ export default function EmiCalculator() {
         contentContainerStyle={styles.scrollContainer}
         keyboardShouldPersistTaps="handled"
       >
+        {/* Loan Amount */}
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Loan Amount (Principal) ₹ *</Text>
           <TextInput
-            style={[
-              styles.input,
-              error ? styles.inputError : null,
-            ]}
+            style={[styles.input, error ? styles.inputError : null]}
             keyboardType="numeric"
             placeholder="Enter principal amount"
             value={principal}
             onChangeText={(text) => {
-              setPrincipal(text);
+              setPrincipal(text.replace(/[^0-9]/g, "")); // Allow only numbers
               if (error) setError(null);
             }}
           />
           {error && <Text style={styles.errorText}>{error}</Text>}
         </View>
 
+        {/* Loan Option Picker */}
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Select Loan Option *</Text>
           <View style={styles.pickerWrapper}>
             <Picker
               selectedValue={selectedLoanIndex}
-              onValueChange={(itemValue: number) =>
-                setSelectedLoanIndex(itemValue)
-              }
+              onValueChange={(itemValue: number) => setSelectedLoanIndex(itemValue)}
               style={styles.picker}
             >
               {loanOptions.map((loan, idx) => (
@@ -132,6 +139,7 @@ export default function EmiCalculator() {
           </View>
         </View>
 
+        {/* Interest Rate */}
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Interest Rate (%)</Text>
           <TextInput
@@ -141,6 +149,7 @@ export default function EmiCalculator() {
           />
         </View>
 
+        {/* Tenure */}
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Tenure (Months)</Text>
           <TextInput
@@ -150,11 +159,9 @@ export default function EmiCalculator() {
           />
         </View>
 
+        {/* Buttons */}
         <View style={styles.buttonRow}>
-          <TouchableOpacity
-            style={styles.buttonCalculate}
-            onPress={onCalculate}
-          >
+          <TouchableOpacity style={styles.buttonCalculate} onPress={onCalculate}>
             <Text style={styles.buttonText}>Calculate EMI</Text>
           </TouchableOpacity>
 
@@ -163,6 +170,7 @@ export default function EmiCalculator() {
           </TouchableOpacity>
         </View>
 
+        {/* Result */}
         {emi !== null && (
           <View style={styles.resultContainer}>
             <Text style={styles.resultTitle}>EMI Details</Text>
@@ -183,6 +191,7 @@ export default function EmiCalculator() {
     </KeyboardAvoidingView>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {

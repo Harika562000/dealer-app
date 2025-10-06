@@ -98,11 +98,8 @@ export default function CarCard({ car, onPress }: CarCardProps) {
         </View>
 
         {/* Notification buttons */}
-        <Text style={styles.title}>{car.make} {car.model}</Text>
-        <Text style={styles.details}>Year: {car.year} | {car.fuel} | {car.mileage}</Text>
         {car.category && <Text style={styles.category}>{car.category}</Text>}
         {car.transmission && <Text style={styles.transmission}>{car.transmission} | {car.seating || 5} Seater</Text>}
-        <Text style={styles.price}>₹{car.price.toLocaleString('en-IN')}</Text>
         
         {/* Features */}
         {car.features && car.features.length > 0 && (
@@ -112,25 +109,6 @@ export default function CarCard({ car, onPress }: CarCardProps) {
             </Text>
           </View>
         )}
-        
-        {/* Notification Action Buttons */}
-        <View style={styles.notificationActions}>
-          <TouchableOpacity
-            style={styles.notificationButton}
-            onPress={handlePriceDropAlert}
-          >
-            <Ionicons name="trending-down" size={16} color="#e74c3c" />
-            <Text style={styles.notificationButtonText}>Price Alert</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.notificationButton}
-            onPress={handleNewArrivalAlert}
-          >
-            <Ionicons name="car" size={16} color="#27ae60" />
-            <Text style={styles.notificationButtonText}>New Alert</Text>
-          </TouchableOpacity>
-        </View>
       </View>
     </TouchableOpacity>
   );

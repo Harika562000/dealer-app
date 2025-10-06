@@ -11,7 +11,7 @@ import {
   View,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { addNotification } from '../../store/notificationSlice'; // Adjust path if needed
+import { addNotification } from '../../store/notificationSlice';
 
 export default function FinancePreApprovalForm({ navigation }: any) {
   const dispatch = useDispatch();
@@ -30,16 +30,65 @@ export default function FinancePreApprovalForm({ navigation }: any) {
 
   const updateField = (field: keyof typeof formData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
-    setFormErrors((prev) => ({ ...prev, [field]: '' })); // Clear error on input
+    setFormErrors((prev) => ({ ...prev, [field]: '' }));
+  };
+
+  const isValidEmail = (email: string) => {
+    return /^\S+@\S+\.\S+$/.test(email);
+  };
+
+  const isNumeric = (value: string) => {
+    return /^\d+$/.test(value);
   };
 
   const validate = () => {
     const errors: { [key: string]: string } = {};
-    Object.entries(formData).forEach(([key, value]) => {
-      if (!value.trim()) {
-        errors[key] = 'This field is required';
-      }
-    });
+    const { fullName, email, phone, income, loanAmount, tenureMonths } = formData;
+
+    if (!fullName.trim()) {
+      errors.fullName = 'Full name is required';
+    } else if (fullName.trim().length < 3) {
+      errors.fullName = 'Full name must be at least 3 characters';
+    }
+
+    if (!email.trim()) {
+      errors.email = 'Email is required';
+    } else if (!isValidEmail(email.trim())) {
+      errors.email = 'Enter a valid email';
+    }
+
+    if (!phone.trim()) {
+      errors.phone = 'Phone number is required';
+    } else if (!isNumeric(phone.trim()) || phone.trim().length !== 10) {
+      errors.phone = 'Enter a valid 10-digit phone number';
+    }
+
+    const incomeVal = parseInt(income);
+    if (!income.trim()) {
+      errors.income = 'Income is required';
+    } else if (!isNumeric(income.trim()) || incomeVal < 10000) {
+      errors.income = 'Income must be at least ₹10,000';
+    }
+
+    const loanVal = parseInt(loanAmount);
+    if (!loanAmount.trim()) {
+      errors.loanAmount = 'Loan amount is required';
+    } else if (!isNumeric(loanAmount.trim()) || loanVal < 50000) {
+      errors.loanAmount = 'Loan amount must be at least ₹50,000';
+    } else if (loanVal > 5000000) {
+      errors.loanAmount = 'Loan amount should not exceed ₹50,00,000';
+    }
+
+    const tenureVal = parseInt(tenureMonths);
+    if (!tenureMonths.trim()) {
+      errors.tenureMonths = 'Tenure is required';
+    } else if (
+      !isNumeric(tenureMonths.trim()) ||
+      tenureVal < 6 ||
+      tenureVal > 360
+    ) {
+      errors.tenureMonths = 'Tenure must be between 6 and 360 months';
+    }
 
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
@@ -51,10 +100,8 @@ export default function FinancePreApprovalForm({ navigation }: any) {
     setIsSubmitting(true);
 
     try {
-      // Simulate API call or async process
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      // Dispatch notification to Redux store
       dispatch(
         addNotification({
           type: 'general',
@@ -65,7 +112,6 @@ export default function FinancePreApprovalForm({ navigation }: any) {
         })
       );
 
-      // Reset form and errors
       setFormData({
         fullName: '',
         email: '',
@@ -75,11 +121,8 @@ export default function FinancePreApprovalForm({ navigation }: any) {
         tenureMonths: '',
       });
       setFormErrors({});
-
-      // Navigate to Notifications tab
       navigation.navigate('Notifications');
 
-      // Optional: Also show alert
       Alert.alert(
         'Success',
         'Your details are submitted. We will contact you soon regarding loan.'
@@ -137,15 +180,16 @@ export default function FinancePreApprovalForm({ navigation }: any) {
           )}
         </View>
 
-        {/* Phone Number */}
+        {/* Phone */}
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Phone Number *</Text>
           <TextInput
             style={[styles.input, formErrors.phone && styles.inputError]}
             value={formData.phone}
-            onChangeText={(text) => updateField('phone', text)}
-            placeholder="+91XXXXXXXXXX"
-            keyboardType="phone-pad"
+            onChangeText={(text) => updateField('phone', text.replace(/[^0-9]/g, ''))}
+            placeholder="10-digit phone number"
+            keyboardType="number-pad"
+            maxLength={10}
           />
           {formErrors.phone && (
             <Text style={styles.errorText}>{formErrors.phone}</Text>
@@ -158,7 +202,7 @@ export default function FinancePreApprovalForm({ navigation }: any) {
           <TextInput
             style={[styles.input, formErrors.income && styles.inputError]}
             value={formData.income}
-            onChangeText={(text) => updateField('income', text)}
+            onChangeText={(text) => updateField('income', text.replace(/[^0-9]/g, ''))}
             placeholder="50000"
             keyboardType="numeric"
           />
@@ -173,7 +217,7 @@ export default function FinancePreApprovalForm({ navigation }: any) {
           <TextInput
             style={[styles.input, formErrors.loanAmount && styles.inputError]}
             value={formData.loanAmount}
-            onChangeText={(text) => updateField('loanAmount', text)}
+            onChangeText={(text) => updateField('loanAmount', text.replace(/[^0-9]/g, ''))}
             placeholder="200000"
             keyboardType="numeric"
           />
@@ -188,9 +232,10 @@ export default function FinancePreApprovalForm({ navigation }: any) {
           <TextInput
             style={[styles.input, formErrors.tenureMonths && styles.inputError]}
             value={formData.tenureMonths}
-            onChangeText={(text) => updateField('tenureMonths', text)}
+            onChangeText={(text) => updateField('tenureMonths', text.replace(/[^0-9]/g, ''))}
             placeholder="24"
             keyboardType="numeric"
+            maxLength={3}
           />
           {formErrors.tenureMonths && (
             <Text style={styles.errorText}>{formErrors.tenureMonths}</Text>
@@ -212,7 +257,6 @@ export default function FinancePreApprovalForm({ navigation }: any) {
   );
 }
 
-// Your styles remain unchanged
 const styles = StyleSheet.create({
   container: {
     flex: 1,
