@@ -3,12 +3,11 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
-  Alert,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 import { useSelector } from "react-redux";
 import { api } from "../../services/serviceApi";
@@ -288,7 +287,6 @@ export default function ServiceTrackingScreen({ route, navigation }: ServiceTrac
   console.log('🔍 ServiceTrackingScreen - Received bookingId:', bookingId);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [showEmailForm, setShowEmailForm] = useState(false);
   
   // Get service bookings from Redux store
   const serviceBookings = useSelector((state: RootState) => state.service.bookings);
@@ -453,36 +451,6 @@ export default function ServiceTrackingScreen({ route, navigation }: ServiceTrac
     }
   };
 
-  const handleEmailUpdate = async () => {
-    try {
-      await api.sendEmailNotification(bookingId, 'update');
-      Alert.alert("Success", "Email notifications enabled for this service.");
-      setShowEmailForm(false);
-    } catch (error) {
-      console.error('Error sending email notification:', error);
-      Alert.alert("Error", "Failed to enable email notifications. Please try again.");
-    }
-  };
-
-  const handleCallService = () => {
-    Alert.alert(
-      "Contact Service Center",
-      "Call service center for immediate assistance?",
-      [
-        {
-          text: "Cancel",
-          style: "cancel"
-        },
-        {
-          text: "Call",
-          onPress: () => {
-            // In a real app, this would initiate a phone call
-            Alert.alert("Calling", "Connecting to service center...");
-          }
-        }
-      ]
-    );
-  };
 
   const renderTrackingUpdate = (update: TrackingUpdate, index: number) => {
     if (!serviceDetails) return null;
@@ -831,16 +799,6 @@ export default function ServiceTrackingScreen({ route, navigation }: ServiceTrac
 
       {/* Action Buttons */}
       <View style={styles.actionButtons}>
-        <TouchableOpacity style={styles.actionButton} onPress={handleEmailUpdate}>
-          <Ionicons name="mail-outline" size={20} color="#171C8F" />
-          <Text style={styles.actionButtonText}>Email Updates</Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity style={styles.actionButton} onPress={handleCallService}>
-          <Ionicons name="call-outline" size={20} color="#171C8F" />
-          <Text style={styles.actionButtonText}>Call Service</Text>
-        </TouchableOpacity>
-        
         <TouchableOpacity 
           style={styles.actionButton} 
           onPress={() => {

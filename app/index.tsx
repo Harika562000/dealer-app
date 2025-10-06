@@ -10,12 +10,16 @@ import {
 } from "react-native";
 import { Provider, useSelector } from "react-redux";
 
+import { PersistGate } from "redux-persist/integration/react";
 import NotificationBadge from "./components/NotificationBadge";
 import ProfileScreen from "./screens/auth/ProfileScreen";
 import BookTestDriveStep1 from "./screens/booking/BookTestDrive/BookTestDrive1";
 import BookTestDriveStep2 from "./screens/booking/BookTestDrive/BookTestDrive2";
 import BookTestDriveStep3 from "./screens/booking/BookTestDrive/BookTestDrive3";
 import BookTestDriveStep4 from "./screens/booking/BookTestDrive/BookTestDrive4";
+import ServiceBookingScreen from "./screens/booking/ServiceBookingScreen";
+import ServiceHistoryScreen from "./screens/booking/ServiceHistoryScreen";
+import ServiceTrackingScreen from "./screens/booking/ServiceTrackingScreen";
 import BrowseCarsScreen from "./screens/cars/BrowseCarsScreen";
 import CarDetailScreen from "./screens/cars/CarDetailScreen";
 import CompareScreen from "./screens/cars/CompareScreen";
@@ -27,7 +31,7 @@ import ChatScreen from "./screens/chat/ChatScreen";
 import NotificationsScreen from "./screens/profile/NotificationsScreen";
 import WishlistScreen from "./screens/profile/WishlistScreen";
 import RecommendationsScreen from "./screens/recommendations/RecommendationsScreen";
-import { store } from "./store/store";
+import { persistor, store } from "./store/store";
 
 // Type definitions for navigation
 type RootTabParamList = {
@@ -53,6 +57,9 @@ type RootStackParamList = {
   BookTestDriveStep4: { car: any; userInfo: { name: string; email: string; phone: string }; date: string; time: string; dealer: any };
   Profile: undefined;
   ChatScreen: undefined;
+  ServiceBooking: undefined;
+  ServiceHistory: undefined;
+  ServiceTracking: { bookingId: string };
 };
  
 const Tab = createBottomTabNavigator<RootTabParamList>();
@@ -122,6 +129,29 @@ function CarStack() {
   );
 }
 
+// Service stack navigator
+function ServiceStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen 
+        name="ServiceBooking" 
+        component={ServiceBookingScreen} 
+        options={{ title: "Service Booking" }} 
+      />
+      <Stack.Screen 
+        name="ServiceHistory" 
+        component={ServiceHistoryScreen} 
+        options={{ title: "Service History" }} 
+      />
+      <Stack.Screen 
+        name="ServiceTracking" 
+        component={ServiceTrackingScreen} 
+        options={{ title: "Track Service" }} 
+      />
+    </Stack.Navigator>
+  );
+}
+
 // Wrappers for screens that need navigation/route props
 function RecommendationsWrapper({ navigation }: any) {
   return <RecommendationsScreen navigation={navigation} />;
@@ -133,6 +163,10 @@ function WishlistWrapper({ navigation, route }: any) {
 
 function NotificationsWrapper({ navigation, route }: any) {
   return <NotificationsScreen navigation={navigation} route={route} />;
+}
+
+function ServiceWrapper({ navigation, route }: any) {
+  return <ServiceStack />;
 }
 
 // Root tab navigator

@@ -2,12 +2,12 @@ import { Ionicons } from "@expo/vector-icons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react";
 import {
-  ActivityIndicator,
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
+    ActivityIndicator,
+    FlatList,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from "react-native";
 import { useSelector } from "react-redux";
 import { api } from "../../services/serviceApi";
@@ -290,29 +290,6 @@ export default function ServiceHistoryScreen({ navigation }: ServiceHistoryScree
               <Text style={styles.reloadButtonText}>Reload</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.debugButton}
-              onPress={() => {
-                console.log('🔍 Debug: Checking persistence status...');
-                const localStorageData = localStorage.getItem('persist:root');
-                console.log('🔍 localStorage data:', localStorageData ? 'Present' : 'Not found');
-                if (localStorageData) {
-                  try {
-                    const parsed = JSON.parse(localStorageData);
-                    const serviceData = parsed.service ? JSON.parse(parsed.service) : null;
-                    console.log('🔍 Service data in localStorage:', serviceData);
-                    console.log('🔍 Number of bookings in localStorage:', serviceData?.bookings?.length || 0);
-                    console.log('🔍 Current Redux state:', serviceHistory);
-                    console.log('🔍 Redux vs localStorage match:', serviceHistory.length === (serviceData?.bookings?.length || 0));
-                  } catch (e) {
-                    console.log('🔍 Error parsing localStorage:', e);
-                  }
-                }
-              }}
-            >
-              <Ionicons name="bug" size={20} color="white" />
-              <Text style={styles.debugButtonText}>Debug</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
               style={styles.newBookingButton}
               onPress={() => navigation.navigate("ServiceBooking")}
             >
@@ -416,20 +393,6 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   reloadButtonText: {
-    color: "white",
-    fontSize: 14,
-    fontWeight: "600",
-    marginLeft: 5,
-  },
-  debugButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#f39c12",
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 6,
-  },
-  debugButtonText: {
     color: "white",
     fontSize: 14,
     fontWeight: "600",

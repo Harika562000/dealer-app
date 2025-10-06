@@ -54,6 +54,7 @@
     "@react-native-community/cli": "latest",
     "@types/react": "~19.0.10",
     "@types/react-dom": "~19.0.0",
+    "@types/redux-persist": "^4.0.0",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~9.2.0",
     "typescript": "~5.8.3"
