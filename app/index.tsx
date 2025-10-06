@@ -1,33 +1,37 @@
 import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import React, { useRef, useEffect } from "react";
-import { Provider, useSelector } from "react-redux";
+import React, { useEffect, useRef } from "react";
 import {
-  View,
+  Animated,
   Text,
   TouchableOpacity,
-  Animated,
+  View,
 } from "react-native";
+import { Provider, useSelector } from "react-redux";
 
+import { PersistGate } from "redux-persist/integration/react";
+import NotificationBadge from "./components/NotificationBadge";
+import ProfileScreen from "./screens/auth/ProfileScreen";
 import BookTestDriveStep1 from "./screens/booking/BookTestDrive/BookTestDrive1";
 import BookTestDriveStep2 from "./screens/booking/BookTestDrive/BookTestDrive2";
 import BookTestDriveStep3 from "./screens/booking/BookTestDrive/BookTestDrive3";
 import BookTestDriveStep4 from "./screens/booking/BookTestDrive/BookTestDrive4";
-import NotificationBadge from "./components/NotificationBadge";
+import ServiceBookingScreen from "./screens/booking/ServiceBookingScreen";
+import ServiceTrackingScreen from "./screens/booking/ServiceTrackingScreen";
 import BrowseCarsScreen from "./screens/cars/BrowseCarsScreen";
 import CarDetailScreen from "./screens/cars/CarDetailScreen";
 import CompareScreen from "./screens/cars/CompareScreen";
-import TradeInEstimationScreen from "./screens/cars/TradeInEstimationScreen";
-import ProfileScreen from "./screens/auth/ProfileScreen";
 import EmiCalculator from "./screens/cars/EmiCalculator";
 import FinancePreApprovalForm from "./screens/cars/FinancePreApprovalForm";
 import TabIconWithBadge from "./screens/cars/tabIconWithBadge";
+import TradeInEstimationScreen from "./screens/cars/TradeInEstimationScreen";
+import ChatScreen from "./screens/chat/ChatScreen";
 import NotificationsScreen from "./screens/profile/NotificationsScreen";
+import ServiceHistoryScreen from "./screens/profile/ServiceHistoryScreen";
 import WishlistScreen from "./screens/profile/WishlistScreen";
 import RecommendationsScreen from "./screens/recommendations/RecommendationsScreen";
-import ChatScreen from "./screens/chat/ChatScreen";
-import { store } from "./store/store";
+import { persistor, store } from "./store/store";
 
 // Type definitions for navigation
 type RootTabParamList = {
@@ -36,6 +40,7 @@ type RootTabParamList = {
   Wishlist: undefined;
   Notifications: undefined;
   Compare: undefined;
+  Service: undefined;
   Profile: undefined;
 };
 
@@ -52,6 +57,9 @@ type RootStackParamList = {
   BookTestDriveStep4: { car: any; userInfo: { name: string; email: string; phone: string }; date: string; time: string; dealer: any };
   Profile: undefined;
   ChatScreen: undefined;
+  ServiceBooking: undefined;
+  ServiceHistory: undefined;
+  ServiceTracking: { bookingId: string };
 };
  
 const Tab = createBottomTabNavigator<RootTabParamList>();
@@ -117,6 +125,31 @@ function CarStack() {
       <Stack.Screen name="BookTestDriveStep4" component={BookTestDriveStep4} options={{ title: "Book Test Drive" }} />
       <Stack.Screen name="Profile" component={ProfileScreen} options={{ title: "Profile" }} />
       <Stack.Screen name="ChatScreen" component={ChatScreen} options={{ title: "Ask Car Assistant" }} />
+      <Stack.Screen name="ServiceBooking" component={ServiceBookingScreen} options={{ title: "Service Booking" }} />
+      <Stack.Screen name="ServiceTracking" component={ServiceTrackingScreen} options={{ title: "Track Service" }} />
+    </Stack.Navigator>
+  );
+}
+
+// Service stack navigator
+function ServiceStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen 
+        name="ServiceBooking" 
+        component={ServiceBookingScreen} 
+        options={{ title: "Service Booking" }} 
+      />
+      <Stack.Screen 
+        name="ServiceHistory" 
+        component={ServiceHistoryScreen} 
+        options={{ title: "Service History" }} 
+      />
+      <Stack.Screen 
+        name="ServiceTracking" 
+        component={ServiceTrackingScreen} 
+        options={{ title: "Track Service" }} 
+      />
     </Stack.Navigator>
   );
 }
@@ -132,6 +165,10 @@ function WishlistWrapper({ navigation, route }: any) {
 
 function NotificationsWrapper({ navigation, route }: any) {
   return <NotificationsScreen navigation={navigation} route={route} />;
+}
+
+function ServiceWrapper({ navigation, route }: any) {
+  return <ServiceStack />;
 }
 
 // Root tab navigator
@@ -158,7 +195,8 @@ function RootNavigator() {
           } else if (route.name === "Compare") {
             iconName = "git-compare";
             count = compareCount;
-          } else if (route.name === "Profile") iconName = "person";
+          } else if (route.name === "Service") iconName = "construct";
+          else if (route.name === "Profile") iconName = "person";
 
           return <TabIconWithBadge name={iconName} size={size} color={color} count={count} />;
         },
@@ -178,6 +216,7 @@ function RootNavigator() {
       <Tab.Screen name="Recommendations" component={RecommendationsWrapper} />
       <Tab.Screen name="Wishlist" component={WishlistWrapper} />
       <Tab.Screen name="Compare" component={CompareScreen} />
+      <Tab.Screen name="Service" component={ServiceWrapper} />
       <Tab.Screen name="Notifications" component={NotificationsWrapper} />
     </Tab.Navigator>
   );
@@ -186,7 +225,9 @@ function RootNavigator() {
 export default function App() {
   return (
     <Provider store={store}>
-      <RootNavigator />
+      <PersistGate loading={null} persistor={persistor}>
+        <RootNavigator />
+      </PersistGate>
     </Provider>
   );
 }
