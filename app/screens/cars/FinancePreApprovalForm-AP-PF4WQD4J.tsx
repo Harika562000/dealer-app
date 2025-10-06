@@ -10,12 +10,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { useDispatch } from 'react-redux';
-import { addNotification } from '../../store/notificationSlice'; // Adjust path if needed
 
-export default function FinancePreApprovalForm({ navigation }: any) {
-  const dispatch = useDispatch();
-
+export default function FinancePreApprovalForm() {
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -51,21 +47,8 @@ export default function FinancePreApprovalForm({ navigation }: any) {
     setIsSubmitting(true);
 
     try {
-      // Simulate API call or async process
       await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      // Dispatch notification to Redux store
-      dispatch(
-        addNotification({
-          type: 'general',
-          title: 'Pre-Approval Submitted',
-          message:
-            'Your details are submitted. We will contact you soon regarding loan.',
-          priority: 'medium',
-        })
-      );
-
-      // Reset form and errors
+      Alert.alert('Success', 'Your pre-approval request has been submitted!');
       setFormData({
         fullName: '',
         email: '',
@@ -75,15 +58,6 @@ export default function FinancePreApprovalForm({ navigation }: any) {
         tenureMonths: '',
       });
       setFormErrors({});
-
-      // Navigate to Notifications tab
-      navigation.navigate('Notifications');
-
-      // Optional: Also show alert
-      Alert.alert(
-        'Success',
-        'Your details are submitted. We will contact you soon regarding loan.'
-      );
     } catch (error) {
       Alert.alert('Error', 'Failed to submit request. Please try again.');
     } finally {
@@ -103,10 +77,7 @@ export default function FinancePreApprovalForm({ navigation }: any) {
         </Text>
       </View>
 
-      <ScrollView
-        contentContainerStyle={styles.scrollContainer}
-        keyboardShouldPersistTaps="handled"
-      >
+      <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
         {/* Full Name */}
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Full Name *</Text>
@@ -116,9 +87,7 @@ export default function FinancePreApprovalForm({ navigation }: any) {
             onChangeText={(text) => updateField('fullName', text)}
             placeholder="Full Name"
           />
-          {formErrors.fullName && (
-            <Text style={styles.errorText}>{formErrors.fullName}</Text>
-          )}
+          {formErrors.fullName && <Text style={styles.errorText}>{formErrors.fullName}</Text>}
         </View>
 
         {/* Email */}
@@ -132,9 +101,7 @@ export default function FinancePreApprovalForm({ navigation }: any) {
             keyboardType="email-address"
             autoCapitalize="none"
           />
-          {formErrors.email && (
-            <Text style={styles.errorText}>{formErrors.email}</Text>
-          )}
+          {formErrors.email && <Text style={styles.errorText}>{formErrors.email}</Text>}
         </View>
 
         {/* Phone Number */}
@@ -147,9 +114,7 @@ export default function FinancePreApprovalForm({ navigation }: any) {
             placeholder="+91XXXXXXXXXX"
             keyboardType="phone-pad"
           />
-          {formErrors.phone && (
-            <Text style={styles.errorText}>{formErrors.phone}</Text>
-          )}
+          {formErrors.phone && <Text style={styles.errorText}>{formErrors.phone}</Text>}
         </View>
 
         {/* Income */}
@@ -162,9 +127,7 @@ export default function FinancePreApprovalForm({ navigation }: any) {
             placeholder="50000"
             keyboardType="numeric"
           />
-          {formErrors.income && (
-            <Text style={styles.errorText}>{formErrors.income}</Text>
-          )}
+          {formErrors.income && <Text style={styles.errorText}>{formErrors.income}</Text>}
         </View>
 
         {/* Loan Amount */}
@@ -177,9 +140,7 @@ export default function FinancePreApprovalForm({ navigation }: any) {
             placeholder="200000"
             keyboardType="numeric"
           />
-          {formErrors.loanAmount && (
-            <Text style={styles.errorText}>{formErrors.loanAmount}</Text>
-          )}
+          {formErrors.loanAmount && <Text style={styles.errorText}>{formErrors.loanAmount}</Text>}
         </View>
 
         {/* Tenure */}
@@ -212,7 +173,6 @@ export default function FinancePreApprovalForm({ navigation }: any) {
   );
 }
 
-// Your styles remain unchanged
 const styles = StyleSheet.create({
   container: {
     flex: 1,

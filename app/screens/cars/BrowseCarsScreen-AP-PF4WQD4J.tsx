@@ -8,7 +8,6 @@ import CarCard from "../../components/CarCard";
 import { useAutoRecommendationRefresh } from "../../hooks/useAutoRecommendationRefresh";
 import { recommendationService } from "../../services/recommendationService";
 import { trackSearch } from "../../store/userBehaviorSlice";
-import LottieView from 'lottie-react-native';
 
 type RootStackParamList = {
   BrowseCars: undefined;
@@ -17,7 +16,6 @@ type RootStackParamList = {
   TradeInEstimation: undefined;
   EmiCalculator: undefined;
   FinancePreApprovalForm: undefined;
-  ChatScreen: undefined;
 };
 
 type BrowseCarsScreenProps = NativeStackScreenProps<RootStackParamList, "BrowseCars">;
@@ -128,8 +126,6 @@ export default function BrowseCarsScreen({ navigation }: BrowseCarsScreenProps) 
         </TouchableOpacity>
       </View>
 
-     
-
       {/* Results Count */}
       <View style={styles.resultsHeader}>
         <Text style={styles.resultsText}>
@@ -148,28 +144,6 @@ export default function BrowseCarsScreen({ navigation }: BrowseCarsScreenProps) 
         contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}
       />
-      <TouchableOpacity
-        style={{
-          position: 'absolute',
-          bottom: 30,
-          right: 20,
-          backgroundColor: '#fff',
-          borderRadius: 50,
-          padding: 10,
-          shadowColor: '#000',
-          shadowOpacity: 0.2,
-          shadowRadius: 4,
-          elevation: 3,
-        }}
-        onPress={() => navigation.navigate('ChatScreen')}
-      >
-        <LottieView
-          source={require('../../../assets/lottie/bubble.json')} // download a Lottie JSON from lottiefiles.com
-          autoPlay
-          loop
-          style={{ width: 60, height: 60 }}
-        />
-      </TouchableOpacity>
     </View>
   );
 }

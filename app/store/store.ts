@@ -1,6 +1,7 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import bookedTestDrivesReducer from "./bookedTestDriveSlice";
 import carReducer from "./carSlice";
 import notificationReducer from "./notificationSlice";
 import recommendationReducer from "./recommendationSlice";
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   notifications: notificationReducer,
   userBehavior: userBehaviorReducer,
   recommendations: recommendationReducer,
+    bookedTestDrives: bookedTestDrivesReducer,
   service: serviceReducer,
 });
 
