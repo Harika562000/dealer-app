@@ -18,7 +18,6 @@ import BookTestDriveStep2 from "./screens/booking/BookTestDrive/BookTestDrive2";
 import BookTestDriveStep3 from "./screens/booking/BookTestDrive/BookTestDrive3";
 import BookTestDriveStep4 from "./screens/booking/BookTestDrive/BookTestDrive4";
 import ServiceBookingScreen from "./screens/booking/ServiceBookingScreen";
-import ServiceHistoryScreen from "./screens/booking/ServiceHistoryScreen";
 import ServiceTrackingScreen from "./screens/booking/ServiceTrackingScreen";
 import BrowseCarsScreen from "./screens/cars/BrowseCarsScreen";
 import CarDetailScreen from "./screens/cars/CarDetailScreen";
@@ -29,6 +28,7 @@ import TabIconWithBadge from "./screens/cars/tabIconWithBadge";
 import TradeInEstimationScreen from "./screens/cars/TradeInEstimationScreen";
 import ChatScreen from "./screens/chat/ChatScreen";
 import NotificationsScreen from "./screens/profile/NotificationsScreen";
+import ServiceHistoryScreen from "./screens/profile/ServiceHistoryScreen";
 import WishlistScreen from "./screens/profile/WishlistScreen";
 import RecommendationsScreen from "./screens/recommendations/RecommendationsScreen";
 import { persistor, store } from "./store/store";
@@ -125,6 +125,8 @@ function CarStack() {
       <Stack.Screen name="BookTestDriveStep4" component={BookTestDriveStep4} options={{ title: "Book Test Drive" }} />
       <Stack.Screen name="Profile" component={ProfileScreen} options={{ title: "Profile" }} />
       <Stack.Screen name="ChatScreen" component={ChatScreen} options={{ title: "Ask Car Assistant" }} />
+      <Stack.Screen name="ServiceBooking" component={ServiceBookingScreen} options={{ title: "Service Booking" }} />
+      <Stack.Screen name="ServiceTracking" component={ServiceTrackingScreen} options={{ title: "Track Service" }} />
     </Stack.Navigator>
   );
 }
