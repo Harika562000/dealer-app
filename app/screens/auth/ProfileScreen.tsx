@@ -139,7 +139,7 @@ export default function ProfileScreen({ navigation }: any) {
           <Ionicons 
             name="car-sport" 
             size={20} 
-            color={activeTab === 'testDrives' ? '#171C8F' : '#7f8c8d'} 
+            color={activeTab === 'testDrives' ? 'white' : '#7f8c8d'} 
           />
           <Text style={[styles.tabText, activeTab === 'testDrives' && styles.activeTabText]}>
             Test Drives
@@ -153,7 +153,7 @@ export default function ProfileScreen({ navigation }: any) {
           <Ionicons 
             name="construct" 
             size={20} 
-            color={activeTab === 'serviceHistory' ? '#171C8F' : '#7f8c8d'} 
+            color={activeTab === 'serviceHistory' ? 'white' : '#7f8c8d'} 
           />
           <Text style={[styles.tabText, activeTab === 'serviceHistory' && styles.activeTabText]}>
             Service History
@@ -200,8 +200,7 @@ export default function ProfileScreen({ navigation }: any) {
               <TouchableOpacity
                 style={styles.reloadButton}
                 onPress={() => {
-                  console.log('🔄 Reloading service history...');
-                  // Add reload functionality here
+                  // Reload functionality will be handled by Redux persist
                 }}
               >
                 <Ionicons name="refresh" size={16} color="white" />

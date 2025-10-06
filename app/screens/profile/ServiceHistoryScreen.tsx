@@ -2,12 +2,12 @@ import { Ionicons } from "@expo/vector-icons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react";
 import {
-    ActivityIndicator,
-    FlatList,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { useSelector } from "react-redux";
 import { api } from "../../services/serviceApi";
@@ -93,30 +93,11 @@ export default function ServiceHistoryScreen({ navigation }: ServiceHistoryScree
   // Get service history from Redux store
   const serviceHistory = useSelector((state: RootState) => state.service.bookings);
   
-  // Debug Redux state
-  console.log('📋 ServiceHistoryScreen - Redux bookings:', serviceHistory);
-  console.log('📋 ServiceHistoryScreen - Number of bookings:', serviceHistory.length);
-  console.log('💾 ServiceHistoryScreen - Data loaded from persistence:', serviceHistory.length > 0 ? 'Yes' : 'No');
-  
-  // Debug: Check localStorage directly
-  const localStorageData = localStorage.getItem('persist:root');
-  console.log('💾 localStorage data:', localStorageData ? 'Present' : 'Not found');
-  if (localStorageData) {
-    try {
-      const parsed = JSON.parse(localStorageData);
-      const serviceData = parsed.service ? JSON.parse(parsed.service) : null;
-      console.log('💾 Service data in localStorage:', serviceData?.bookings?.length || 0, 'bookings');
-    } catch (e) {
-      console.log('💾 Error parsing localStorage:', e);
-    }
-  }
-  
   // Debug: Show status distribution
   const statusCounts = serviceHistory.reduce((acc, booking) => {
     acc[booking.status] = (acc[booking.status] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
-  console.log('📊 Status distribution:', statusCounts);
 
   // Convert Redux bookings to ServiceRecord format
   const convertedServiceHistory: ServiceRecord[] = serviceHistory.map(booking => ({
@@ -142,15 +123,12 @@ export default function ServiceHistoryScreen({ navigation }: ServiceHistoryScree
         
         // If no bookings in Redux, try to load from API as fallback
         if (serviceHistory.length === 0) {
-          console.log('📋 No bookings in Redux, loading from API...');
           const apiData = await api.getServiceHistory();
           // Note: We don't set this to state since we're using Redux
           // This is just to show that API is working
-          console.log('📋 API returned:', apiData.length, 'bookings');
         }
         
       } catch (err) {
-        console.error('Error loading service history:', err);
         setError(err instanceof Error ? err.message : 'Failed to load service history');
       } finally {
         setIsLoading(false);
@@ -281,9 +259,8 @@ export default function ServiceHistoryScreen({ navigation }: ServiceHistoryScree
             <TouchableOpacity
               style={styles.reloadButton}
               onPress={() => {
-                console.log('🔄 Clearing localStorage and reloading...');
-                localStorage.clear();
-                window.location.reload();
+                console.log('🔄 Reloading service history...');
+                // Reload functionality will be handled by Redux persist
               }}
             >
               <Ionicons name="refresh" size={20} color="white" />
@@ -321,7 +298,10 @@ export default function ServiceHistoryScreen({ navigation }: ServiceHistoryScree
           <Text style={styles.errorText}>{error}</Text>
           <TouchableOpacity 
             style={styles.retryButton} 
-            onPress={() => window.location.reload()}
+            onPress={() => {
+              console.log('🔄 Retrying to load service history...');
+              // Retry functionality will be handled by Redux persist
+            }}
           >
             <Text style={styles.retryButtonText}>Retry</Text>
           </TouchableOpacity>

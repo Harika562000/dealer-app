@@ -60,7 +60,8 @@ const API_BASE_URL = API_CONFIG.BASE_URL;
 // Helper function to get auth token (implement based on your auth system)
 const getAuthToken = (): string | null => {
   // In a real app, this would get the token from secure storage
-  return localStorage.getItem('authToken') || null;
+  // For React Native, use AsyncStorage or secure storage
+  return null; // Placeholder - implement proper token storage
 };
 
 // Helper function to handle API responses
@@ -89,7 +90,6 @@ export const serviceApi = {
 
       return await handleApiResponse(response);
     } catch (error) {
-      console.error('Error creating booking:', error);
       throw new Error('Failed to create service booking. Please check your connection and try again.');
     }
   },
@@ -108,7 +108,6 @@ export const serviceApi = {
 
       return await handleApiResponse(response);
     } catch (error) {
-      console.error('Error fetching booking status:', error);
       throw new Error('Failed to fetch booking status. Please try again.');
     }
   },
@@ -127,7 +126,6 @@ export const serviceApi = {
 
       return await handleApiResponse(response);
     } catch (error) {
-      console.error('Error fetching service history:', error);
       throw new Error('Failed to fetch service history. Please try again.');
     }
   },
@@ -148,7 +146,6 @@ export const serviceApi = {
 
       return await handleApiResponse(response);
     } catch (error) {
-      console.error('Error cancelling booking:', error);
       throw new Error('Failed to cancel booking. Please try again.');
     }
   },
@@ -169,7 +166,6 @@ export const serviceApi = {
 
       return await handleApiResponse(response);
     } catch (error) {
-      console.error('Error updating booking:', error);
       throw new Error('Failed to update booking. Please try again.');
     }
   },
@@ -188,7 +184,6 @@ export const serviceApi = {
 
       return await handleApiResponse(response);
     } catch (error) {
-      console.error('Error fetching available slots:', error);
       // Return default time slots if API fails
       return [
         "09:00 AM", "10:00 AM", "11:00 AM", "12:00 PM",
@@ -213,7 +208,6 @@ export const serviceApi = {
 
       return await handleApiResponse(response);
     } catch (error) {
-      console.error('Error sending notification:', error);
       throw new Error('Failed to send notification. Please try again.');
     }
   }
@@ -222,10 +216,8 @@ export const serviceApi = {
 // Mock implementation for development/testing
 export const mockServiceApi = {
   async createBooking(bookingData: ServiceBookingRequest): Promise<ServiceBookingResponse> {
-    console.log('🎭 Mock API: createBooking called with:', bookingData);
     
     // Simulate API delay
-    console.log('⏳ Mock API: Simulating network delay...');
     await new Promise(resolve => setTimeout(resolve, 1500));
     
     // Simulate random success/failure for testing (disabled for normal use)
@@ -241,7 +233,6 @@ export const mockServiceApi = {
       message: "Service booking created successfully"
     };
     
-    console.log('✅ Mock API: Returning result:', result);
     return result;
   },
 
@@ -331,10 +322,5 @@ export const mockServiceApi = {
 
 // Export the appropriate API based on configuration
 const useMockApi = shouldUseMockApi();
-console.log('🔧 API Configuration:', {
-  environment: API_CONFIG.ENVIRONMENT,
-  useMockApi,
-  baseUrl: API_CONFIG.BASE_URL
-});
 
 export const api = useMockApi ? mockServiceApi : serviceApi;

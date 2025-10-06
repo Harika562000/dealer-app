@@ -1,6 +1,6 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
-import storage from "redux-persist/lib/storage";
 import bookedTestDrivesReducer from "./bookedTestDriveSlice";
 import carReducer from "./carSlice";
 import notificationReducer from "./notificationSlice";
@@ -11,7 +11,7 @@ import userBehaviorReducer from "./userBehaviorSlice";
 // Persist configuration
 const persistConfig = {
   key: "root",
-  storage,
+  storage: AsyncStorage,
   whitelist: ["service", "notifications"], // Only persist service and notifications
 };
 
